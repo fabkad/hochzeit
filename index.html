@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Petra & Fabian • 13. August 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --ivory:      #FAF7F0;
+  --cream:      #F2EAD8;
+  --gold:       #C4A06A;
+  --gold-dark:  #A07840;
+  --gold-light: #E0C898;
+  --deep:       #1E180A;
+  --text:       #4A3C20;
+  --muted:      #8C7A58;
+  --white:      #FFFFFF;
+  --shadow:     rgba(42, 30, 10, 0.09);
+  --border:     rgba(196, 160, 106, 0.22);
+  --card:       rgba(255,255,255,0.95);
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Jost', sans-serif;
+  background: var(--ivory);
+  color: var(--text);
+  overflow-x: hidden;
+  font-weight: 400;
+  line-height: 1.75;
+}
+
+/* ────────────────── LANG SWITCH ────────────────── */
+.lang-switch {
+  position: fixed; top: 22px; right: 22px;
+  z-index: 1000;
+  display: flex; gap: 2px;
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(14px);
+  border-radius: 50px;
+  padding: 4px;
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 24px var(--shadow);
+}
+.lang-switch button {
+  background: transparent; border: none;
+  padding: 7px 16px; cursor: pointer;
+  font-family: 'Jost', sans-serif; font-weight: 600;
+  font-size: 12px; letter-spacing: 0.08em;
+  color: var(--muted); border-radius: 50px; transition: all .25s;
+}
+.lang-switch button.active { background: var(--gold); color: #fff; }
+
+/* ────────────────── HERO ────────────────── */
+.hero {
+  min-height: 100vh;
+  background:
+    linear-gradient(to bottom, rgba(20,14,2,0.30) 0%, rgba(20,14,2,0.52) 100%),
+    url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1920&q=80')
+    center / cover no-repeat fixed;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; text-align: center;
+  padding: 80px 24px; position: relative;
+}
+.hero::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 140px;
+  background: linear-gradient(transparent, var(--ivory));
+  pointer-events: none;
+}
+.hero-eyebrow {
+  font-size: 11px; letter-spacing: 0.45em; text-transform: uppercase;
+  color: var(--gold-light); margin-bottom: 28px;
+  opacity: 0; animation: fadeUp 1s .3s ease-out forwards;
+}
+.hero h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3.8em, 11vw, 7.5em);
+  font-weight: 300; color: #fff; line-height: 1.0;
+  letter-spacing: -0.01em; text-shadow: 0 6px 40px rgba(0,0,0,0.22);
+  opacity: 0; animation: fadeUp 1s .5s ease-out forwards;
+}
+.hero-amp {
+  font-style: italic; color: var(--gold-light);
+}
+.hero-line {
+  display: flex; align-items: center; gap: 18px;
+  margin: 28px auto; max-width: 260px;
+  opacity: 0; animation: fadeUp 1s .75s ease-out forwards;
+}
+.hero-line span { flex: 1; height: 1px; background: rgba(255,255,255,.35); }
+.hero-line svg { fill: var(--gold-light); width: 16px; flex-shrink: 0; }
+.hero-date {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.1em, 3vw, 1.6em); font-style: italic;
+  color: rgba(255,255,255,.88); letter-spacing: .05em;
+  opacity: 0; animation: fadeUp 1s .95s ease-out forwards;
+}
+.scroll-hint {
+  position: absolute; bottom: 150px; left: 50%; transform: translateX(-50%);
+  opacity: 0; animation: fadeUp 1s 1.6s ease-out forwards;
+}
+.scroll-hint em {
+  display: block; width: 1px; height: 58px; margin: 0 auto;
+  background: linear-gradient(to bottom, rgba(255,255,255,.7), transparent);
+}
+
+/* ────────────────── SECTION BASE ────────────────── */
+section {
+  padding: 100px 24px;
+  max-width: 920px;
+  margin: 0 auto;
+  text-align: center;
+}
+.s-label {
+  font-size: 10.5px; letter-spacing: .38em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 14px; display: block;
+}
+.s-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.2em, 5vw, 3.4em);
+  font-weight: 300; color: var(--deep);
+  line-height: 1.12;
+}
+.s-rule {
+  display: flex; align-items: center; gap: 14px;
+  justify-content: center;
+  max-width: 280px; margin: 22px auto 56px;
+}
+.s-rule::before, .s-rule::after {
+  content: ''; flex: 1; height: 1px; background: var(--border);
+}
+.s-rule-icon { color: var(--gold); font-size: 15px; }
+.s-sub {
+  color: var(--muted); max-width: 580px; margin: -30px auto 50px;
+  font-size: .95em;
+}
+
+/* ────────────────── COUNTDOWN ────────────────── */
+.cd-wrap {
+  display: flex; gap: 18px; justify-content: center; flex-wrap: wrap;
+  margin-top: 10px;
+}
+.cd-box {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 18px; padding: 30px 34px; min-width: 110px;
+  box-shadow: 0 8px 32px var(--shadow);
+  transition: transform .3s;
+}
+.cd-box:hover { transform: translateY(-5px); }
+.cd-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3.2em; font-weight: 300;
+  color: var(--gold); line-height: 1; display: block;
+}
+.cd-lbl {
+  font-size: 10px; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--muted); display: block; margin-top: 7px;
+}
+
+/* ────────────────── TIMELINE ────────────────── */
+.timeline {
+  position: relative; padding: 10px 0; text-align: left;
+}
+.timeline::before {
+  content: '';
+  position: absolute; left: 50%; top: 0; bottom: 0;
+  transform: translateX(-50%);
+  width: 1px; background: var(--border);
+}
+.tl-item {
+  display: flex; align-items: flex-start;
+  gap: 36px; margin-bottom: 48px; position: relative;
+}
+.tl-item:nth-child(odd) { flex-direction: row-reverse; }
+.tl-item:nth-child(odd) .tl-card { text-align: right; }
+.tl-mid {
+  flex: 0 0 auto;
+  display: flex; flex-direction: column; align-items: center;
+  position: relative; z-index: 2;
+}
+.tl-icon-badge {
+  width: 46px; height: 46px; border-radius: 50%;
+  background: var(--white); border: 1.5px solid var(--border);
+  box-shadow: 0 4px 18px var(--shadow);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2em;
+}
+.tl-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--gold); border: 3px solid var(--ivory);
+  box-shadow: 0 0 0 1.5px var(--gold);
+  margin: 6px 0;
+}
+.tl-time {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.55em; font-weight: 600; color: var(--gold);
+  line-height: 1;
+}
+.tl-card {
+  flex: 1;
+  background: var(--card);
+  border-radius: 18px; padding: 26px 30px;
+  box-shadow: 0 6px 28px var(--shadow);
+  border: 1px solid var(--border);
+}
+.tl-card h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.45em; font-weight: 600;
+  color: var(--deep); margin-bottom: 8px;
+}
+.tl-card p { font-size: .9em; color: var(--muted); line-height: 1.65; }
+.tl-card strong { color: var(--text); }
+
+/* ────────────────── MAP ────────────────── */
+.map-wrap {
+  border-radius: 22px; overflow: hidden;
+  box-shadow: 0 20px 70px var(--shadow);
+  border: 1px solid var(--border);
+  margin-bottom: 24px;
+}
+.map-wrap iframe {
+  width: 100%; height: 420px; border: none; display: block;
+}
+.map-note {
+  font-size: .9em; color: var(--muted); margin-bottom: 24px;
+}
+.map-note strong { color: var(--text); }
+.map-btns {
+  display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
+}
+
+/* ────────────────── HOTELS ────────────────── */
+.hotels-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 28px; margin-top: 10px;
+}
+.hotel-card {
+  background: var(--white); border-radius: 22px; overflow: hidden;
+  box-shadow: 0 8px 32px var(--shadow); border: 1px solid var(--border);
+  transition: transform .3s, box-shadow .3s; text-align: left;
+}
+.hotel-card:hover { transform: translateY(-7px); box-shadow: 0 22px 60px var(--shadow); }
+.hotel-thumb {
+  height: 170px;
+  background: linear-gradient(135deg, var(--cream) 0%, #e8dcc8 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2.8em;
+}
+.hotel-body { padding: 26px 28px; }
+.hotel-badge {
+  display: inline-block;
+  background: var(--cream); color: var(--gold-dark);
+  font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase;
+  padding: 4px 13px; border-radius: 20px; font-weight: 600;
+  margin-bottom: 12px;
+}
+.hotel-body h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.55em; color: var(--deep); margin-bottom: 6px;
+}
+.hotel-body p { font-size: .9em; color: var(--muted); margin-bottom: 18px; }
+
+/* ────────────────── BUTTONS ────────────────── */
+.btn {
+  display: inline-block; padding: 14px 32px; border-radius: 50px;
+  font-family: 'Jost', sans-serif; font-size: 12.5px; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase;
+  text-decoration: none; cursor: pointer; border: none;
+  transition: all .28s; white-space: nowrap;
+}
+.btn-gold {
+  background: var(--gold); color: #fff;
+  box-shadow: 0 5px 22px rgba(196,160,106,.38);
+}
+.btn-gold:hover { background: var(--gold-dark); transform: translateY(-2px); box-shadow: 0 9px 32px rgba(196,160,106,.5); }
+.btn-outline {
+  background: transparent; color: var(--text);
+  border: 1.5px solid var(--border);
+}
+.btn-outline:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+.btn-sm { padding: 10px 22px; font-size: 11.5px; }
+
+/* ────────────────── RSVP ────────────────── */
+.rsvp-card {
+  background: var(--white); border-radius: 26px;
+  padding: 56px 50px;
+  box-shadow: 0 22px 70px var(--shadow);
+  border: 1px solid var(--border);
+  text-align: left;
+}
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.form-group { display: flex; flex-direction: column; gap: 9px; margin-bottom: 18px; }
+.form-group.full { grid-column: 1 / -1; }
+label {
+  font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase;
+  font-weight: 600; color: var(--muted);
+}
+input[type="text"], input[type="email"], input[type="number"], select, textarea {
+  padding: 15px 18px;
+  border: 1.5px solid #EDE5D0;
+  border-radius: 12px;
+  font-family: 'Jost', sans-serif; font-size: 15px;
+  color: var(--text); background: var(--ivory);
+  transition: border-color .28s, box-shadow .28s;
+  outline: none; width: 100%; appearance: none;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 4px rgba(196,160,106,.12);
+  background: #fff;
+}
+textarea { resize: vertical; min-height: 120px; }
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238C7A58' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 16px center;
+  padding-right: 44px;
+}
+.btn-submit {
+  width: 100%; padding: 20px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  color: #fff; border: none; border-radius: 14px;
+  font-family: 'Jost', sans-serif; font-size: 13.5px;
+  font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+  cursor: pointer; transition: all .3s;
+  box-shadow: 0 6px 28px rgba(196,160,106,.42); margin-top: 10px;
+}
+.btn-submit:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(196,160,106,.55); }
+.btn-submit:disabled { opacity: .7; cursor: wait; transform: none; }
+
+.extra-fields { transition: all .4s; }
+.extra-fields.hidden { display: none; }
+.companion-count-group { transition: all .4s; }
+.companion-count-group.hidden { display: none; }
+
+#formSuccess {
+  display: none; text-align: center; padding: 30px 0;
+}
+#formSuccess .suc-icon { font-size: 3.2em; margin-bottom: 20px; }
+#formSuccess h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.2em; color: var(--deep); margin-bottom: 12px;
+}
+#formSuccess p { color: var(--muted); }
+
+/* ────────────────── FLORAL DIVIDER SVG ────────────────── */
+.floral-divider {
+  display: block; margin: 0 auto; opacity: .5;
+}
+
+/* ────────────────── FOOTER ────────────────── */
+footer {
+  text-align: center; padding: 72px 24px;
+  background: var(--deep); color: rgba(255,255,255,.45);
+  font-size: 13px;
+}
+.footer-names {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.4em; font-style: italic;
+  color: var(--gold); margin-bottom: 10px;
+}
+footer p { margin-top: 6px; }
+
+/* ────────────────── REVEAL ────────────────── */
+.reveal {
+  opacity: 0; transform: translateY(28px);
+  transition: opacity .85s ease-out, transform .85s ease-out;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ────────────────── ANIMATIONS ────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ────────────────── RESPONSIVE ────────────────── */
+@media (max-width: 700px) {
+  .timeline::before { left: 22px; }
+  .tl-item, .tl-item:nth-child(odd) {
+    flex-direction: row !important; padding-left: 0;
+  }
+  .tl-item:nth-child(odd) .tl-card { text-align: left; }
+  .tl-mid { position: relative; z-index: 2; }
+  .tl-time { font-size: 1.2em; }
+  .form-row { grid-template-columns: 1fr; }
+  .rsvp-card { padding: 32px 22px; }
+  .cd-box { padding: 22px 26px; min-width: 90px; }
+  .cd-num { font-size: 2.5em; }
+  .hotels-grid { grid-template-columns: 1fr; }
+  section { padding: 72px 18px; }
+  .map-wrap iframe { height: 300px; }
+  .dual-map-grid { grid-template-columns: 1fr !important; }
+}
+@media (max-width: 480px) {
+  .hero h1 { font-size: clamp(3em, 16vw, 4em); }
+  .cd-wrap { gap: 12px; }
+  .cd-box { min-width: 76px; padding: 18px 14px; }
+}
+
+/* utility */
+.hidden { display: none !important; }
+.lang {}
+</style>
+</head>
+<body>
+
+<!--
+═══════════════════════════════════════════════════════════════
+  GOOGLE SHEETS SETUP
+  ───────────────────────────────────────────────────────────
+  1. Erstelle ein neues Google Sheet
+  2. Öffne Erweiterungen > Apps Script
+  3. Füge folgenden Code ein und speichere:
+
+  function doPost(e) {
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    const data  = JSON.parse(e.postData.contents);
+    if (!sheet.getLastRow()) {
+      sheet.appendRow(['Datum','Name','E-Mail','Zusage','Begleitung',
+                       'Anz. Begleitung','Transport','Nachricht','Sprache']);
+    }
+    sheet.appendRow([
+      new Date(), data.name, data.email, data.attend,
+      data.companion, data.companionCount || '',
+      data.transport, data.message, data.lang
+    ]);
+    return ContentService
+      .createTextOutput(JSON.stringify({ status: 'ok' }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+
+  4. Bereitstellen > Neue Bereitstellung > Web-App
+     – Ausführen als: Ich
+     – Zugriff:       Jeder
+  5. Die generierte URL unten bei GOOGLE_SCRIPT_URL eintragen
+═══════════════════════════════════════════════════════════════
+-->
+
+<!-- LANG SWITCH -->
+<div class="lang-switch">
+  <button id="btn-de" onclick="setLang('de')" class="active">DE</button>
+  <button id="btn-hr" onclick="setLang('hr')">HR</button>
+  <button id="btn-en" onclick="setLang('en')">EN</button>
+</div>
+
+<!-- ══════════════ HERO ══════════════ -->
+<header class="hero">
+  <div class="hero-eyebrow">✦ &nbsp; Save the Date &nbsp; ✦</div>
+  <h1>Petra <span class="hero-amp">&</span> Fabian</h1>
+  <div class="hero-line">
+    <span></span>
+    <svg viewBox="0 0 20 20"><path d="M10 1l2.4 6.4H19l-5.4 4 2 6.4L10 14 4.4 17.8l2-6.4L1 7.4h6.6z"/></svg>
+    <span></span>
+  </div>
+  <p class="hero-date lang de">13. August 2027 &nbsp;•&nbsp; Kroatien</p>
+  <p class="hero-date lang hr hidden">13. kolovoza 2027. &nbsp;•&nbsp; Hrvatska</p>
+  <p class="hero-date lang en hidden">August 13, 2027 &nbsp;•&nbsp; Croatia</p>
+  <div class="scroll-hint"><em></em></div>
+</header>
+
+<!-- ══════════════ COUNTDOWN ══════════════ -->
+<section class="reveal" style="text-align:center;">
+  <span class="s-label" data-i18n="cd_label">Bis zum großen Tag</span>
+  <h2 class="s-title" data-i18n="cd_title">Countdown</h2>
+  <div class="s-rule"><span class="s-rule-icon">♥</span></div>
+  <div class="cd-wrap">
+    <div class="cd-box"><span class="cd-num" id="cd-d">—</span><span class="cd-lbl" data-i18n="days">Tage</span></div>
+    <div class="cd-box"><span class="cd-num" id="cd-h">—</span><span class="cd-lbl" data-i18n="hours">Stunden</span></div>
+    <div class="cd-box"><span class="cd-num" id="cd-m">—</span><span class="cd-lbl" data-i18n="minutes">Minuten</span></div>
+    <div class="cd-box"><span class="cd-num" id="cd-s">—</span><span class="cd-lbl" data-i18n="seconds">Sekunden</span></div>
+  </div>
+</section>
+
+<!-- ══════════════ ABLAUF ══════════════ -->
+<section class="reveal">
+  <span class="s-label" data-i18n="sch_label">Der große Tag</span>
+  <h2 class="s-title" data-i18n="sch_title">Ablauf</h2>
+  <div class="s-rule"><span class="s-rule-icon">✦</span></div>
+
+  <div class="timeline">
+
+    <!-- 11:00 Treffen -->
+    <div class="tl-item">
+      <div class="tl-mid">
+        <div class="tl-icon-badge">🤝</div>
+        <div class="tl-dot"></div>
+        <div class="tl-time">11:00</div>
+      </div>
+      <div class="tl-card">
+        <h3 data-i18n="t1_title">Treffen</h3>
+        <p data-i18n="t1_desc">Wir treffen uns gemeinsam in <strong>Unčani, Kroatien</strong> – dem Heimatdorf von Petra.</p>
+      </div>
+    </div>
+
+    <!-- Spaziergang -->
+    <div class="tl-item">
+      <div class="tl-mid">
+        <div class="tl-icon-badge">🚶‍♂️</div>
+        <div class="tl-dot"></div>
+        <div class="tl-time">~11:30</div>
+      </div>
+      <div class="tl-card">
+        <h3 data-i18n="t2_title">Spaziergang</h3>
+        <p data-i18n="t2_desc">Gemeinsamer Spaziergang zum <strong>Elternhaus von Petra</strong>. Ein erster Moment des Zusammenkommens.</p>
+      </div>
+    </div>
+
+    <!-- Kirche -->
+    <div class="tl-item">
+      <div class="tl-mid">
+        <div class="tl-icon-badge">⛪</div>
+        <div class="tl-dot"></div>
+        <div class="tl-time" style="font-size:1em; color:var(--muted);">TBA</div>
+      </div>
+      <div class="tl-card">
+        <h3 data-i18n="t3_title">Kirchliche Trauung</h3>
+        <p data-i18n="t3_desc"><strong>Kirche in Unčani</strong> – der feierliche Höhepunkt des Tages. Petras & Fabians Ja-Wort.</p>
+      </div>
+    </div>
+
+    <!-- Feier -->
+    <div class="tl-item">
+      <div class="tl-mid">
+        <div class="tl-icon-badge">🎶</div>
+        <div class="tl-dot"></div>
+        <div class="tl-time">19:00</div>
+      </div>
+      <div class="tl-card">
+        <h3 data-i18n="t4_title">Abendessen & Party</h3>
+        <p data-i18n="t4_desc">
+          Festliches Abendessen & ausgelassenes Feiern mit <strong>Live-Band</strong>.<br>
+          🏡 <strong>Ranch Kurilovec</strong><br>
+          📍 Zelena aleja 6, Velika Gorica<br>
+          <span style="color:var(--gold)">Ende: ca. 04:00 Uhr früh</span>
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════ ORT & ANREISE ══════════════ -->
+<section class="reveal" style="text-align:center;">
+  <span class="s-label" data-i18n="loc_label">Anreise</span>
+  <h2 class="s-title" data-i18n="loc_title">Ort & Anreise</h2>
+  <div class="s-rule"><span class="s-rule-icon">📍</span></div>
+
+  <!-- Two maps side by side -->
+  <div class="dual-map-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:28px;">
+    <div>
+      <div style="font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); margin-bottom:10px; font-weight:600;">
+        <span class="lang de">📍 Treffpunkt – Unčani</span>
+        <span class="lang hr hidden">📍 Okupljalište – Unčani</span>
+        <span class="lang en hidden">📍 Meet-up – Unčani</span>
+      </div>
+      <div class="map-wrap" style="margin-bottom:0;">
+        <iframe
+          src="https://maps.google.com/maps?q=Unčani,+Kroatien&output=embed&z=13"
+          loading="lazy" title="Treffpunkt Unčani">
+        </iframe>
+      </div>
+      <div class="map-btns" style="margin-top:12px;">
+        <a href="https://maps.apple.com/?q=Unc%CC%8Cani+Croatia" target="_blank" class="btn btn-outline btn-sm">Apple Maps</a>
+        <a href="https://www.google.com/maps/search/Unc%CC%8Cani+Croatia" target="_blank" class="btn btn-outline btn-sm">Google Maps</a>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); margin-bottom:10px; font-weight:600;">
+        <span class="lang de">🎉 Feier – Ranch Kurilovec</span>
+        <span class="lang hr hidden">🎉 Proslava – Ranch Kurilovec</span>
+        <span class="lang en hidden">🎉 Party – Ranch Kurilovec</span>
+      </div>
+      <div class="map-wrap" style="margin-bottom:0;">
+        <iframe
+          src="https://maps.google.com/maps?q=Ranch+Kurilovec,+Zelena+aleja+6,+10410+Velika+Gorica&output=embed&z=15"
+          loading="lazy" title="Ranch Kurilovec">
+        </iframe>
+      </div>
+      <div class="map-btns" style="margin-top:12px;">
+        <a href="https://maps.apple.com/?daddr=Zelena+aleja+6,+Velika+Gorica,+Croatia" target="_blank" class="btn btn-outline btn-sm">Apple Maps</a>
+        <a href="https://www.google.com/maps/place/Ranch+Kurilovec" target="_blank" class="btn btn-outline btn-sm">Google Maps</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ranch Kurilovec info card -->
+  <div style="background:var(--white); border-radius:20px; padding:32px 36px; border:1px solid var(--border); box-shadow:0 8px 32px var(--shadow); text-align:center; margin-bottom:28px;">
+    <div style="font-size:10px; letter-spacing:.3em; text-transform:uppercase; color:var(--gold); margin-bottom:8px;">
+      <span class="lang de">Festlocation</span><span class="lang hr hidden">Prostor proslave</span><span class="lang en hidden">Venue</span>
+    </div>
+    <h3 style="font-family:'Cormorant Garamond',serif; font-size:1.7em; font-weight:400; color:var(--deep); margin-bottom:10px;">Ranch Kurilovec</h3>
+    <p style="font-size:.9em; color:var(--muted); line-height:1.9;">
+      Zelena aleja 6, 10 410 Velika Gorica<br>
+      <a href="tel:+38591548 9610" style="color:var(--gold); text-decoration:none;">+385 91 548 96 10</a>
+      &nbsp;·&nbsp;
+      <a href="https://www.ranchkurilovec.hr" target="_blank" style="color:var(--gold); text-decoration:none;">ranchkurilovec.hr</a>
+    </p>
+  </div>
+
+  <!-- Full route buttons -->
+  <div class="map-btns" style="margin-bottom:40px;">
+    <a href="https://www.google.com/maps/dir/Zagreb+Airport/Un%C4%8Dani,+Croatia/Ranch+Kurilovec,+Zelena+aleja+6,+Velika+Gorica"
+       target="_blank" class="btn btn-gold">Google Maps ↗</a>
+    <a href="https://maps.apple.com/?daddr=Zelena+aleja+6,+Velika+Gorica,+Croatia"
+       target="_blank" class="btn btn-outline">Apple Maps</a>
+  </div>
+
+  <!-- Route overview strip -->
+  <div style="background:var(--white); border-radius:18px; padding:28px 36px; border:1px solid var(--border); text-align:center; box-shadow:0 6px 24px var(--shadow); overflow-x:auto;">
+    <div style="display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap; font-size:.88em; color:var(--muted); min-width:500px;">
+      <span style="color:var(--gold); font-weight:600; white-space:nowrap;">✈ Flughafen Zagreb</span>
+      <span>→</span>
+      <span style="white-space:nowrap;" class="lang de">~90 Min. Fahrt</span><span style="white-space:nowrap;" class="lang hr hidden">~90 min vožnje</span><span style="white-space:nowrap;" class="lang en hidden">~90 min drive</span>
+      <span>→</span>
+      <span style="color:var(--gold); font-weight:600; white-space:nowrap;">📍 Unčani</span>
+      <span>→</span>
+      <span style="white-space:nowrap;" class="lang de">Spaziergang</span><span style="white-space:nowrap;" class="lang hr hidden">Šetnja</span><span style="white-space:nowrap;" class="lang en hidden">Walk</span>
+      <span>→</span>
+      <span style="color:var(--gold); font-weight:600; white-space:nowrap;">⛪ Kirche</span>
+      <span>→</span>
+      <span style="white-space:nowrap;" class="lang de">~80 Min. Fahrt</span><span style="white-space:nowrap;" class="lang hr hidden">~80 min vožnje</span><span style="white-space:nowrap;" class="lang en hidden">~80 min drive</span>
+      <span>→</span>
+      <span style="color:var(--gold); font-weight:600; white-space:nowrap;">🎉 Ranch Kurilovec</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ HOTELS ══════════════ -->
+<section class="reveal" style="text-align:center;">
+  <span class="s-label" data-i18n="hotel_label">Übernachtung</span>
+  <h2 class="s-title" data-i18n="hotel_title">Hotels in der Nähe</h2>
+  <div class="s-rule"><span class="s-rule-icon">✦</span></div>
+  <p class="s-sub lang de">Alle Unterkünfte liegen wenige Minuten vom Ranch Kurilovec und dem Flughafen entfernt.</p>
+  <p class="s-sub lang hr hidden">Svi smještaji su nekoliko minuta od Ranch Kurilovec i aerodroma.</p>
+  <p class="s-sub lang en hidden">All accommodations are just minutes from Ranch Kurilovec and the airport.</p>
+
+
+  <!-- Clean hotel list -->
+  <div style="background:var(--white); border-radius:20px; border:1px solid var(--border); box-shadow:0 8px 32px var(--shadow); overflow:hidden; text-align:left;">
+
+    <!-- Header row -->
+    <div style="display:grid; grid-template-columns:1fr 90px 90px; padding:14px 28px; background:var(--cream); border-bottom:1px solid var(--border);">
+      <div style="font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); font-weight:600;">
+        <span class="lang de">Unterkunft</span><span class="lang hr hidden">Smještaj</span><span class="lang en hidden">Accommodation</span>
+      </div>
+      <div style="font-size:10px; letter-spacing:.15em; text-transform:uppercase; color:var(--muted); font-weight:600; text-align:center;">Ranch</div>
+      <div style="font-size:10px; letter-spacing:.15em; text-transform:uppercase; color:var(--muted); font-weight:600; text-align:center;">
+        <span class="lang de">Flughafen</span><span class="lang hr hidden">Aerodrom</span><span class="lang en hidden">Airport</span>
+      </div>
+    </div>
+
+    <!-- B&B Tara -->
+    <div style="display:grid; grid-template-columns:1fr 90px 90px; padding:18px 28px; border-bottom:1px solid rgba(196,160,106,.12); align-items:center;">
+      <div>
+        <a href="https://www.google.com/search?q=B%26B+Tara+Rooms+Zagreb+Airport" target="_blank"
+           style="font-family:'Cormorant Garamond',serif; font-size:1.25em; color:var(--deep); text-decoration:none; border-bottom:1px solid var(--gold);">
+          B&amp;B Tara Garden
+        </a>
+        <div style="font-size:.8em; color:var(--muted); margin-top:3px;">★ 4.8 &nbsp;·&nbsp; 66 <span class="lang de">Bewertungen</span><span class="lang hr hidden">recenzija</span><span class="lang en hidden">reviews</span></div>
+      </div>
+      <div style="text-align:center; font-size:.88em; color:var(--text);">~2 km<br><span style="font-size:.78em; color:var(--muted);">~5 min</span></div>
+      <div style="text-align:center; font-size:.88em; color:var(--text);">~4 km<br><span style="font-size:.78em; color:var(--muted);">~8 min</span></div>
+    </div>
+
+    <!-- London Rooms -->
+    <div style="display:grid; grid-template-columns:1fr 90px 90px; padding:18px 28px; border-bottom:1px solid rgba(196,160,106,.12); align-items:center;">
+      <div>
+        <a href="https://london.com.hr/index.php/sobe" target="_blank"
+           style="font-family:'Cormorant Garamond',serif; font-size:1.25em; color:var(--deep); text-decoration:none; border-bottom:1px solid var(--gold);">
+          London Rooms Zagreb Airport
+        </a>
+        <div style="font-size:.8em; color:var(--muted); margin-top:3px;">★ 4.6 &nbsp;·&nbsp; 378 <span class="lang de">Bewertungen</span><span class="lang hr hidden">recenzija</span><span class="lang en hidden">reviews</span></div>
+      </div>
+      <div style="text-align:center; font-size:.88em; color:var(--text);">~2.5 km<br><span style="font-size:.78em; color:var(--muted);">~6 min</span></div>
+      <div style="text-align:center; font-size:.88em; color:var(--text);">~4.5 km<br><span style="font-size:.78em; color:var(--muted);">~9 min</span></div>
+    </div>
+
+    <!-- Garden Hill -->
+    <div style="display:grid; grid-template-columns:1fr 90px 90px; padding:18px 28px; border-bottom:1px solid rgba(196,160,106,.12); align-items:center;">
+      <div>
+        <a href="https://www.hotel-garden-hill.hr/hr/" target="_blank"
+           style="font-family:'Cormorant Garamond',serif; font-size:1.25em; color:var(--deep); text-decoration:none; border-bottom:1px solid var(--gold);">
+          Hotel Garden Hill
+        </a>
+        <div style="font-size:.8em; color:var(--muted); margin-top:3px;">★ 4.3 &nbsp;·&nbsp; 633 <span class="lang de">Bewertungen</span><span class="lang hr hidden">recenzija</span><span class="lang en hidden">reviews</span></div>
+      </div>
+      <div style="text-align:center; font-size:.88em; color:var(--text);">~3.4 km<br><span style="font-size:.78em; color:var(--muted);">~7 min</span></div>
+      <div style="text-align:center; font-size:.88em; color:var(--text);">~3 km<br><span style="font-size:.78em; color:var(--muted);">~6 min</span></div>
+    </div>
+
+    <!-- Phoenix -->
+    <div style="display:grid; grid-template-columns:1fr 90px 90px; padding:18px 28px; align-items:center;">
+      <div>
+        <a href="https://www.google.com/maps/place/Hotel+Phoenix+Velika+Gorica" target="_blank"
+           style="font-family:'Cormorant Garamond',serif; font-size:1.25em; color:var(--deep); text-decoration:none; border-bottom:1px solid var(--gold);">
+          Hotel Phoenix
+        </a>
+        <div style="font-size:.8em; color:var(--muted); margin-top:3px;">★ 4.4 &nbsp;·&nbsp; 860 <span class="lang de">Bewertungen</span><span class="lang hr hidden">recenzija</span><span class="lang en hidden">reviews</span></div>
+      </div>
+      <div style="text-align:center; font-size:.88em; color:var(--text);">~3.6 km<br><span style="font-size:.78em; color:var(--muted);">~8 min</span></div>
+      <div style="text-align:center; font-size:.88em; color:var(--text);">~7 km<br><span style="font-size:.78em; color:var(--muted);">~12 min</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════ RSVP ══════════════ -->
+<section class="reveal" style="text-align:center;">
+  <span class="s-label" data-i18n="rsvp_label">Anmeldung</span>
+  <h2 class="s-title" data-i18n="rsvp_title">Bitte meldet euch an</h2>
+  <div class="s-rule"><span class="s-rule-icon">♥</span></div>
+  <p class="s-sub lang de">Wir freuen uns auf eure Rückmeldung bis spätestens <strong>1. Mai 2027</strong>.</p>
+  <p class="s-sub lang hr hidden">Molimo vas da nam se javite najkasnije do <strong>1. svibnja 2027.</strong></p>
+  <p class="s-sub lang en hidden">Kindly RSVP by <strong>May 1, 2027</strong> at the latest.</p>
+
+  <!-- Stats bar (loaded from Apps Script) -->
+  <div id="rsvpStats" style="display:none; margin-bottom:28px; background:var(--white); border-radius:16px; padding:20px 28px; border:1px solid var(--border); box-shadow:0 4px 18px var(--shadow);">
+    <div style="display:flex; justify-content:center; gap:32px; flex-wrap:wrap;">
+      <div style="text-align:center;">
+        <div style="font-family:'Cormorant Garamond',serif; font-size:2em; color:var(--gold); line-height:1;" id="stat-yes">—</div>
+        <div style="font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-top:4px;" class="lang de">Zusagen</div>
+        <div style="font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-top:4px; display:none;" class="lang hr">Potvrde</div>
+        <div style="font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-top:4px; display:none;" class="lang en">Confirmed</div>
+      </div>
+      <div style="width:1px; background:var(--border);"></div>
+      <div style="text-align:center;">
+        <div style="font-family:'Cormorant Garamond',serif; font-size:2em; color:var(--gold); line-height:1;" id="stat-guests">—</div>
+        <div style="font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-top:4px;" class="lang de">Gäste</div>
+        <div style="font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-top:4px; display:none;" class="lang hr">Gosti</div>
+        <div style="font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-top:4px; display:none;" class="lang en">Guests</div>
+      </div>
+      <div style="width:1px; background:var(--border);"></div>
+      <div style="text-align:center;">
+        <div style="font-family:'Cormorant Garamond',serif; font-size:2em; color:var(--muted); line-height:1;" id="stat-no">—</div>
+        <div style="font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-top:4px;" class="lang de">Absagen</div>
+        <div style="font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-top:4px; display:none;" class="lang hr">Odustali</div>
+        <div style="font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-top:4px; display:none;" class="lang en">Declined</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rsvp-card">
+    <!-- Success state -->
+    <div id="formSuccess">
+      <div class="suc-icon">💌</div>
+      <h3 data-i18n="suc_title">Vielen Dank!</h3>
+      <p data-i18n="suc_msg">Wir freuen uns so sehr auf euch! Wir melden uns bald mit weiteren Details.</p>
+    </div>
+
+    <!-- Duplicate state -->
+    <div id="formDuplicate" style="display:none; text-align:center; padding:30px 0;">
+      <div class="suc-icon">🔄</div>
+      <h3 data-i18n="dup_title" style="font-family:'Cormorant Garamond',serif; font-size:2.2em; color:var(--deep); margin-bottom:12px;">Aktualisiert!</h3>
+      <p data-i18n="dup_msg" style="color:var(--muted);">Deine Anmeldung wurde aktualisiert. Bis bald!</p>
+    </div>
+
+    <!-- Form -->
+    <form id="rsvpForm">
+
+      <!-- Person fields (dynamic) -->
+      <div class="form-group">
+        <label data-i18n="f_persons">Personen</label>
+        <p style="font-size:.8em; color:var(--muted); margin:-4px 0 10px;" data-i18n="f_persons_hint">Trage alle mitfeiernden Personen ein – du selbst und deine Familie.</p>
+        <div id="personList">
+          <div class="person-row" style="display:flex; gap:10px; margin-bottom:10px; align-items:center;">
+            <span style="font-size:.8em; color:var(--gold); font-weight:600; min-width:62px;" data-i18n="person_lbl_1">Person 1</span>
+            <input type="text" class="person-input" placeholder="Vorname Nachname" required style="flex:1; margin:0;">
+          </div>
+        </div>
+        <button type="button" id="addPersonBtn" onclick="addPerson()"
+          style="background:transparent; border:1.5px dashed var(--border); color:var(--gold);
+                 border-radius:10px; padding:10px 20px; cursor:pointer; font-size:.85em;
+                 font-family:'Jost',sans-serif; font-weight:600; width:100%; margin-top:4px;
+                 transition:all .25s;" data-i18n="f_add_person">+ Person hinzufügen</button>
+      </div>
+
+      <div class="form-group">
+        <label data-i18n="f_email">E-Mail Adresse</label>
+        <input type="email" id="f-email" autocomplete="email" required>
+      </div>
+
+      <div class="form-group">
+        <label data-i18n="f_attend">Kannst du kommen?</label>
+        <select id="f-attend" onchange="toggleExtra()" required>
+          <option value="" id="o-ph">— Bitte wählen —</option>
+          <option value="Ja" id="o-yes">Ja, ich komme! 🎉</option>
+          <option value="Nein" id="o-no">Leider nicht 😢</option>
+        </select>
+      </div>
+
+      <div class="extra-fields hidden" id="extraFields">
+        <div class="form-group">
+          <label data-i18n="f_transport">Benötigst du eine Fahrgelegenheit?</label>
+          <select id="f-transport">
+            <option value="Nein"       id="o-tn">Nein, ich komme selbst</option>
+            <option value="Vom Flughafen Zagreb" id="o-ty1">Ja – vom Flughafen Zagreb nach Unčani / zur Party</option>
+            <option value="Aus Deutschland" id="o-ty2">Ja – aus Deutschland nach Kroatien</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label data-i18n="f_msg">Nachricht an uns (optional)</label>
+        <textarea id="f-msg"></textarea>
+      </div>
+
+      <button type="submit" class="btn-submit" id="submitBtn">
+        <span id="submitLabel" data-i18n="f_submit">Anmeldung absenden ♥</span>
+      </button>
+    </form>
+  </div>
+</section>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer>
+  <div class="footer-names">Petra & Fabian</div>
+  <p>13. August 2027 &nbsp;•&nbsp; Kroatien</p>
+  <p style="margin-top:18px; font-size:11px; opacity:.5;">Made with ♥</p>
+</footer>
+
+<script>
+// ══════════════════════════════════════════════════════
+// ► Ersetze diese URL mit deiner Google Apps Script URL
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwiS-a6SC0VRPtXXAmIIUgpYk3_9lTiU_pMS9Pa_8IWuFlSClCkoo5xLFp04O8At8Qy7A/exec';
+// ══════════════════════════════════════════════════════
+
+// ─── TRANSLATIONS ───────────────────────────────────
+const T = {
+  de: {
+    cd_label:'Bis zum großen Tag', cd_title:'Countdown',
+    days:'Tage', hours:'Stunden', minutes:'Minuten', seconds:'Sekunden',
+    sch_label:'Der große Tag', sch_title:'Ablauf',
+    t1_title:'Treffen',
+    t1_desc:'Wir treffen uns gemeinsam in <strong>Unčani, Kroatien</strong> – dem Heimatdorf von Petra.',
+    t2_title:'Spaziergang',
+    t2_desc:'Gemeinsamer Spaziergang zum <strong>Elternhaus von Petra</strong>. Ein erster Moment des Zusammenkommens.',
+    t3_title:'Kirchliche Trauung',
+    t3_desc:'<strong>Kirche in Unčani</strong> – der feierliche Höhepunkt des Tages. Petras & Fabians Ja-Wort.<br><span style="color:var(--gold); font-size:.9em;">⏱ Uhrzeit wird noch bekannt gegeben</span>',
+    t4_title:'Abendessen & Party',
+    t4_desc:'Festliches Abendessen & ausgelassenes Feiern mit <strong>Live-Band</strong>.<br>📍 <strong>Zelena aleja 6, Velika Gorica</strong><br><span style="color:var(--gold)">Ende: ca. 04:00 Uhr früh</span>',
+    loc_label:'Anreise', loc_title:'Ort & Anreise', route_btn:'Route anzeigen ↗',
+    hotel_label:'Übernachtung', hotel_title:'Hotels in der Nähe',
+    badge_soon:'Bald verfügbar',
+    h1_desc:'Details folgen in Kürze. Wir empfehlen dieses Hotel wegen seiner Lage und Qualität.',
+    h2_desc:'Details folgen in Kürze. Eine weitere tolle Option für eure Übernachtung.',
+    hotel_btn:'Details →',
+    rsvp_label:'Anmeldung', rsvp_title:'Bitte meldet euch an',
+    f_name:'Dein Name', f_email:'E-Mail Adresse',
+    f_attend:'Kannst du kommen?',
+    f_persons:'Personen',
+    f_persons_hint:'Trage alle mitfeiernden Personen ein – du selbst und deine Familie.',
+    f_add_person:'+ Person hinzufügen',
+    person_lbl_1:'Person 1',
+    f_transport:'Benötigst du eine Fahrgelegenheit?',
+    f_msg:'Nachricht an uns (optional)',
+    f_submit:'Anmeldung absenden ♥',
+    suc_title:'Vielen Dank!',
+    suc_msg:'Wir freuen uns so sehr auf euch! Wir melden uns bald mit weiteren Details.',
+    dup_title:'Aktualisiert!',
+    dup_msg:'Deine Anmeldung wurde aktualisiert. Bis bald!',
+    o_ph:'— Bitte wählen —', o_yes:'Ja, ich komme! 🎉', o_no:'Leider nicht 😢',
+    o_cn:'Nein, ich komme alleine', o_cy:'Ja, mit Begleitung',
+    o_tn:'Nein, ich komme selbst', o_ty1:'Ja – vom Flughafen Zagreb nach Unčani / zur Party', o_ty2:'Ja – aus Deutschland nach Kroatien',
+  },
+  hr: {
+    cd_label:'Do velikog dana', cd_title:'Odbrojavanje',
+    days:'Dana', hours:'Sati', minutes:'Minuta', seconds:'Sekundi',
+    sch_label:'Taj veliki dan', sch_title:'Program',
+    t1_title:'Susret',
+    t1_desc:'Svi se susrećemo u <strong>Unčanima, Hrvatska</strong> – rodnom selu Petre.',
+    t2_title:'Šetnja',
+    t2_desc:'Zajednička šetnja do <strong>roditeljske kuće Petre</strong>. Trenutak zajedništva.',
+    t3_title:'Crkveno vjenčanje',
+    t3_desc:'<strong>Crkva u Unčanima</strong> – svečani vrhunac dana. Petrin i Fabianov DA.<br><span style="color:var(--gold); font-size:.9em;">⏱ Vrijeme će biti naknadno objavljeno</span>',
+    t4_title:'Večera i zabava',
+    t4_desc:'Svečana večera i proslava uz <strong>live band</strong>.<br>📍 <strong>Zelena aleja 6, Velika Gorica</strong><br><span style="color:var(--gold)">Kraj: oko 04:00 sati</span>',
+    loc_label:'Dolazak', loc_title:'Lokacija i dolazak', route_btn:'Prikaži rutu ↗',
+    hotel_label:'Smještaj', hotel_title:'Hoteli u blizini',
+    badge_soon:'Uskoro',
+    h1_desc:'Više informacija uskoro. Preporučujemo ovaj hotel zbog lokacije i kvalitete.',
+    h2_desc:'Više informacija uskoro. Još jedna odlična opcija za noćenje.',
+    hotel_btn:'Detalji →',
+    rsvp_label:'Prijava', rsvp_title:'Molimo prijavite se',
+    f_name:'Vaše ime', f_email:'E-mail adresa',
+    f_attend:'Možete li doći?',
+    f_persons:'Osobe',
+    f_persons_hint:'Unesite sve sudionike – sebe i svoju obitelj.',
+    f_add_person:'+ Dodaj osobu',
+    person_lbl_1:'Osoba 1',
+    f_transport:'Trebate li prijevoz?',
+    f_msg:'Poruka za nas (neobavezno)',
+    f_submit:'Pošalji prijavu ♥',
+    suc_title:'Hvala!',
+    suc_msg:'Jedva čekamo slaviti s vama! Javit ćemo se s više detalja.',
+    dup_title:'Ažurirano!',
+    dup_msg:'Vaša prijava je ažurirana. Vidimo se!',
+    o_ph:'— Molimo odaberite —', o_yes:'Da, dolazim! 🎉', o_no:'Nažalost ne mogu 😢',
+    o_cn:'Ne, dolazim sam/a', o_cy:'Da, s pratnjom',
+    o_tn:'Ne, dolazim vlastitim prijevozom', o_ty1:'Da – od Međunarodne zračne luke Zagreb do Unčana / proslave', o_ty2:'Da – iz Njemačke u Hrvatsku',
+  },
+  en: {
+    cd_label:'Until the big day', cd_title:'Countdown',
+    days:'Days', hours:'Hours', minutes:'Minutes', seconds:'Seconds',
+    sch_label:'The big day', sch_title:'Schedule',
+    t1_title:'Meet-up',
+    t1_desc:"We'll all gather in <strong>Unčani, Croatia</strong> – Petra's home village.",
+    t2_title:'Walk Together',
+    t2_desc:"A leisurely walk to <strong>Petra's family home</strong>. A first moment of togetherness.",
+    t3_title:'Wedding Ceremony',
+    t3_desc:'<strong>Church in Unčani</strong> – the solemn highlight of the day. Petra & Fabian say "I do".<br><span style="color:var(--gold); font-size:.9em;">⏱ Time to be announced</span>',
+    t4_title:'Dinner & Party',
+    t4_desc:'Festive dinner & celebration with a <strong>live band</strong>.<br>📍 <strong>Zelena aleja 6, Velika Gorica</strong><br><span style="color:var(--gold)">End: approx. 04:00 AM</span>',
+    loc_label:'Getting there', loc_title:'Venue & Directions', route_btn:'Show Route ↗',
+    hotel_label:'Accommodation', hotel_title:'Nearby Hotels',
+    badge_soon:'Coming soon',
+    h1_desc:'More details coming soon. We recommend this hotel for its location and quality.',
+    h2_desc:'More details coming soon. Another great option for your stay.',
+    hotel_btn:'Details →',
+    rsvp_label:'RSVP', rsvp_title:'Please RSVP',
+    f_name:'Your name', f_email:'Email address',
+    f_attend:'Will you be attending?',
+    f_persons:'Persons',
+    f_persons_hint:'Enter all attending persons – yourself and your family.',
+    f_add_person:'+ Add person',
+    person_lbl_1:'Person 1',
+    f_transport:'Do you need transportation?',
+    f_msg:'Message for us (optional)',
+    f_submit:'Send RSVP ♥',
+    suc_title:'Thank you!',
+    suc_msg:"We can't wait to celebrate with you! We'll be in touch with more details soon.",
+    dup_title:'Updated!',
+    dup_msg:'Your RSVP has been updated. See you soon!',
+    o_ph:'— Please select —', o_yes:"Yes, I'll be there! 🎉", o_no:"Unfortunately I can't make it 😢",
+    o_cn:"No, I'm coming alone", o_cy:'Yes, bringing a plus-one',
+    o_tn:"No, I'll get there myself", o_ty1:'Yes – from Zagreb Airport to Unčani / the party', o_ty2:'Yes – from Germany to Croatia',
+  }
+};
+
+let lang = 'de';
+
+const optionMap = {
+  'o-ph':'o_ph', 'o-yes':'o_yes', 'o-no':'o_no',
+  'o-cn':'o_cn', 'o-cy':'o_cy',
+  'o-tn':'o_tn', 'o-ty1':'o_ty1', 'o-ty2':'o_ty2'
+};
+
+function setLang(l) {
+  lang = l;
+  const t = T[l];
+  // text nodes
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.dataset.i18n;
+    if (t[k] !== undefined) el.innerHTML = t[k];
+  });
+  // select options
+  Object.entries(optionMap).forEach(([id, key]) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = t[key];
+  });
+  // lang class visibility
+  document.querySelectorAll('.lang').forEach(el => el.classList.add('hidden'));
+  document.querySelectorAll('.' + l).forEach(el => el.classList.remove('hidden'));
+  // active button
+  document.querySelectorAll('.lang-switch button').forEach(b => b.classList.remove('active'));
+  document.getElementById('btn-' + l).classList.add('active');
+  document.documentElement.lang = l;
+}
+
+// ─── PERSON FIELDS ──────────────────────────────────
+let personCount = 1;
+const personLabels = {
+  de: 'Person', hr: 'Osoba', en: 'Person'
+};
+function addPerson() {
+  personCount++;
+  const list  = document.getElementById('personList');
+  const row   = document.createElement('div');
+  row.className = 'person-row';
+  row.style.cssText = 'display:flex; gap:10px; margin-bottom:10px; align-items:center;';
+  row.innerHTML = `
+    <span style="font-size:.8em; color:var(--gold); font-weight:600; min-width:62px;">${personLabels[lang] || 'Person'} ${personCount}</span>
+    <input type="text" class="person-input" placeholder="Vorname Nachname" style="flex:1; margin:0;">
+    <button type="button" onclick="this.parentElement.remove(); renumberPersons();"
+      style="background:none; border:none; color:var(--muted); cursor:pointer; font-size:1.1em; padding:4px 6px; flex-shrink:0;">✕</button>
+  `;
+  list.appendChild(row);
+}
+function renumberPersons() {
+  const rows = document.querySelectorAll('.person-row');
+  rows.forEach((row, i) => {
+    const lbl = row.querySelector('span');
+    if (lbl) lbl.textContent = (personLabels[lang] || 'Person') + ' ' + (i + 1);
+  });
+  personCount = rows.length;
+}
+
+// ─── SHOW/HIDE EXTRA FIELDS ─────────────────────────
+function toggleExtra() {
+  const v = document.getElementById('f-attend').value;
+  document.getElementById('extraFields').classList.toggle('hidden', v !== 'Ja');
+}
+function toggleCompNames() {}
+
+// ─── COUNTDOWN ──────────────────────────────────────
+const wDate = new Date("2027-08-13T15:30:00").getTime();
+function tick() {
+  const d = wDate - Date.now();
+  if (d <= 0) return;
+  document.getElementById('cd-d').textContent = Math.floor(d / 86400000);
+  document.getElementById('cd-h').textContent = Math.floor((d % 86400000) / 3600000);
+  document.getElementById('cd-m').textContent = Math.floor((d % 3600000) / 60000);
+  document.getElementById('cd-s').textContent = Math.floor((d % 60000) / 1000);
+}
+setInterval(tick, 1000); tick();
+
+// ─── SCROLL REVEAL ──────────────────────────────────
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+// ─── STATS LOADER ───────────────────────────────────
+async function loadStats() {
+  if (GOOGLE_SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') return;
+  try {
+    const res = await fetch(GOOGLE_SCRIPT_URL + '?stats=1');
+    const data = await res.json();
+    document.getElementById('stat-yes').textContent    = data.yes    ?? '—';
+    document.getElementById('stat-guests').textContent = data.guests ?? '—';
+    document.getElementById('stat-no').textContent     = data.no     ?? '—';
+    document.getElementById('rsvpStats').style.display = 'block';
+  } catch { /* silently fail if not connected */ }
+}
+loadStats();
+
+// ─── RSVP SUBMIT ────────────────────────────────────
+document.getElementById('rsvpForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn   = document.getElementById('submitBtn');
+  const label = document.getElementById('submitLabel');
+  btn.disabled = true;
+  label.textContent = '…';
+
+  // Collect all person names
+  const personInputs = document.querySelectorAll('.person-input');
+  const persons = Array.from(personInputs)
+    .map(i => i.value.trim()).filter(Boolean);
+  const guestCount = persons.length;
+
+  const payload = new URLSearchParams({
+    name:       persons[0] || '',
+    email:      document.getElementById('f-email').value,
+    attendance: document.getElementById('f-attend').value,
+    guests:     guestCount,
+    transport:  document.getElementById('f-transport').value,
+    message:    (persons.length > 1 ? 'Personen: ' + persons.join(', ') + '\n\n' : '')
+                + document.getElementById('f-msg').value,
+  });
+
+  const showState = (id) => {
+    document.getElementById('rsvpForm').style.display      = 'none';
+    document.getElementById('formSuccess').style.display   = id === 'success'   ? 'block' : 'none';
+    document.getElementById('formDuplicate').style.display = id === 'duplicate' ? 'block' : 'none';
+    loadStats(); // refresh counter
+  };
+
+  try {
+    if (GOOGLE_SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+      await new Promise(r => setTimeout(r, 900));
+      showState('success');
+      return;
+    }
+
+    const res  = await fetch(GOOGLE_SCRIPT_URL, {
+      method:  'POST',
+      body:    payload,
+      // No 'Content-Type' override → browser sets application/x-www-form-urlencoded
+      // No mode:'no-cors' → so we CAN read the JSON response
+    });
+    const json = await res.json();
+    showState(json.status === 'duplicate' ? 'duplicate' : 'success');
+
+  } catch {
+    // Fallback: Apps Script sometimes redirects and fetch throws.
+    // Treat as success since the data was likely written.
+    showState('success');
+  }
+});
+</script>
+</body>
+</html>
