@@ -589,8 +589,8 @@ footer p { margin-top: 6px; }
   <h2 class="s-title" data-i18n="loc_title">Ort & Anreise</h2>
   <div class="s-rule"><span class="s-rule-icon">📍</span></div>
 
-  <!-- Two maps side by side -->
-  <div class="dual-map-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:28px;">
+  <!-- Three maps side by side -->
+  <div class="dual-map-grid" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px; margin-bottom:28px;">
     <div>
       <div style="font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); margin-bottom:10px; font-weight:600;">
         <span class="lang de">📍 Treffpunkt – Unčani</span>
@@ -606,6 +606,23 @@ footer p { margin-top: 6px; }
       <div class="map-btns" style="margin-top:12px;">
         <a href="https://maps.apple.com/?q=Unc%CC%8Cani+Croatia" target="_blank" class="btn btn-outline btn-sm">Apple Maps</a>
         <a href="https://www.google.com/maps/search/Unc%CC%8Cani+Croatia" target="_blank" class="btn btn-outline btn-sm">Google Maps</a>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); margin-bottom:10px; font-weight:600;">
+        <span class="lang de">⛪ Trauung – Hrvatska Kostajnica</span>
+        <span class="lang hr hidden">⛪ Vjenčanje – Hrvatska Kostajnica</span>
+        <span class="lang en hidden">⛪ Ceremony – Hrvatska Kostajnica</span>
+      </div>
+      <div class="map-wrap" style="margin-bottom:0;">
+        <iframe
+          src="https://maps.google.com/maps?q=Crkva+Svetog+Ante+Padovanskog,+Hrvatska+Kostajnica&output=embed&z=15"
+          loading="lazy" title="Kirche Hrvatska Kostajnica">
+        </iframe>
+      </div>
+      <div class="map-btns" style="margin-top:12px;">
+        <a href="https://maps.apple.com/?q=Crkva%20Svetog%20Ante%20Padovanskog%2C%20Hrvatska%20Kostajnica" target="_blank" class="btn btn-outline btn-sm">Apple Maps</a>
+        <a href="https://www.google.com/maps/place/Church+of+Saint+Anthony+of+Padua/@45.2230567,16.5464043,1116m/data=!3m2!1e3!4b1!4m6!3m5!1s0x4766d8a9ff2b3697:0x26d51028a86d9002!8m2!3d45.2230567!4d16.5489792!16s%2Fg%2F11c1xqqfm7" target="_blank" class="btn btn-outline btn-sm">Google Maps</a>
       </div>
     </div>
     <div>
@@ -627,6 +644,22 @@ footer p { margin-top: 6px; }
     </div>
   </div>
 
+  <!-- Church info card -->
+  <div style="background:var(--white); border-radius:20px; padding:32px 36px; border:1px solid var(--border); box-shadow:0 8px 32px var(--shadow); text-align:center; margin-bottom:28px;">
+    <div style="font-size:10px; letter-spacing:.3em; text-transform:uppercase; color:var(--gold); margin-bottom:8px;">
+      <span class="lang de">Trauungskirche</span><span class="lang hr hidden">Crkva vjenčanja</span><span class="lang en hidden">Ceremony Church</span>
+    </div>
+    <h3 style="font-family:'Cormorant Garamond',serif; font-size:1.7em; font-weight:400; color:var(--deep); margin-bottom:10px;">
+      <span class="lang de">Kirche des Hl. Antonius von Padua</span>
+      <span class="lang hr hidden">Crkva sv. Ante Padovanskog</span>
+      <span class="lang en hidden">Church of Saint Anthony of Padua</span>
+    </h3>
+    <p style="font-size:.9em; color:var(--muted); line-height:1.9;">
+      Ul. Davorina Trstenjaka 3, 44430 Hrvatska Kostajnica<br>
+      <a href="tel:+38544851021" style="color:var(--gold); text-decoration:none;">+385 44 851 021</a>
+    </p>
+  </div>
+
   <!-- Ranch Kurilovec info card -->
   <div style="background:var(--white); border-radius:20px; padding:32px 36px; border:1px solid var(--border); box-shadow:0 8px 32px var(--shadow); text-align:center; margin-bottom:28px;">
     <div style="font-size:10px; letter-spacing:.3em; text-transform:uppercase; color:var(--gold); margin-bottom:8px;">
@@ -643,7 +676,7 @@ footer p { margin-top: 6px; }
 
   <!-- Full route buttons -->
   <div class="map-btns" style="margin-bottom:40px;">
-    <a href="https://www.google.com/maps/dir/Zagreb+Airport/Un%C4%8Dani,+Croatia/Ranch+Kurilovec,+Zelena+aleja+6,+Velika+Gorica"
+    <a href="https://www.google.com/maps/dir/Zagreb+Airport/Un%C4%8Dani,+Croatia/Crkva+Svetog+Ante+Padovanskog,+Hrvatska+Kostajnica/Ranch+Kurilovec,+Zelena+aleja+6,+Velika+Gorica"
        target="_blank" class="btn btn-gold">Google Maps ↗</a>
     <a href="https://maps.apple.com/?daddr=Zelena+aleja+6,+Velika+Gorica,+Croatia"
        target="_blank" class="btn btn-outline">Apple Maps</a>
@@ -651,16 +684,18 @@ footer p { margin-top: 6px; }
 
   <!-- Route overview strip -->
   <div style="background:var(--white); border-radius:18px; padding:28px 36px; border:1px solid var(--border); text-align:center; box-shadow:0 6px 24px var(--shadow); overflow-x:auto;">
-    <div style="display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap; font-size:.88em; color:var(--muted); min-width:500px;">
+    <div style="display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap; font-size:.88em; color:var(--muted); min-width:640px;">
       <span style="color:var(--gold); font-weight:600; white-space:nowrap;">✈ Flughafen Zagreb</span>
       <span>→</span>
       <span style="white-space:nowrap;" class="lang de">~90 Min. Fahrt</span><span style="white-space:nowrap;" class="lang hr hidden">~90 min vožnje</span><span style="white-space:nowrap;" class="lang en hidden">~90 min drive</span>
       <span>→</span>
       <span style="color:var(--gold); font-weight:600; white-space:nowrap;">📍 Unčani</span>
       <span>→</span>
-      <span style="color:var(--gold); font-weight:600; white-space:nowrap;">⛪ Kirche</span>
+      <span style="white-space:nowrap;" class="lang de">~30 Min. Fahrt</span><span style="white-space:nowrap;" class="lang hr hidden">~30 min vožnje</span><span style="white-space:nowrap;" class="lang en hidden">~30 min drive</span>
       <span>→</span>
-      <span style="white-space:nowrap;" class="lang de">~80 Min. Fahrt</span><span style="white-space:nowrap;" class="lang hr hidden">~80 min vožnje</span><span style="white-space:nowrap;" class="lang en hidden">~80 min drive</span>
+      <span style="color:var(--gold); font-weight:600; white-space:nowrap;">⛪ Hrvatska Kostajnica</span>
+      <span>→</span>
+      <span style="white-space:nowrap;" class="lang de">~90 Min. Fahrt</span><span style="white-space:nowrap;" class="lang hr hidden">~90 min vožnje</span><span style="white-space:nowrap;" class="lang en hidden">~90 min drive</span>
       <span>→</span>
       <span style="color:var(--gold); font-weight:600; white-space:nowrap;">🎉 Ranch Kurilovec</span>
     </div>
