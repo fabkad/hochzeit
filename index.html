@@ -71,6 +71,14 @@ body {
   background: linear-gradient(transparent, var(--ivory));
   pointer-events: none;
 }
+/* iOS/Safari renders "background-attachment: fixed" as blank on elements
+   other than <body>. Fall back to normal scroll attachment there so the
+   photo is actually visible on iPhone/iPad. */
+@supports (-webkit-touch-callout: none) {
+  .hero {
+    background-attachment: scroll;
+  }
+}
 .hero-eyebrow {
   font-size: 11px; letter-spacing: 0.45em; text-transform: uppercase;
   color: var(--gold-light); margin-bottom: 28px;
@@ -419,18 +427,57 @@ footer p { margin-top: 6px; }
 
   function doPost(e) {
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-    const data  = JSON.parse(e.postData.contents);
+    const data  = e.parameter; // Formular sendet form-urlencoded, NICHT JSON
+
     if (!sheet.getLastRow()) {
-      sheet.appendRow(['Datum','Name','E-Mail','Zusage','Begleitung',
-                       'Anz. Begleitung','Transport','Nachricht','Sprache']);
+      sheet.appendRow(['Datum','Name(n)','E-Mail','Zusage','Anzahl Gäste','Transport','Nachricht']);
     }
-    sheet.appendRow([
-      new Date(), data.name, data.email, data.attend,
-      data.companion, data.companionCount || '',
-      data.transport, data.message, data.lang
-    ]);
+
+    const email = (data.email || '').toString().trim().toLowerCase();
+    const rows  = sheet.getDataRange().getValues();
+    let existingRow = -1;
+    for (let i = 1; i < rows.length; i++) {
+      if ((rows[i][2] || '').toString().trim().toLowerCase() === email && email !== '') {
+        existingRow = i + 1; // 1-indexiert
+        break;
+      }
+    }
+
+    const rowData = [
+      new Date(),
+      data.name       || '',
+      data.email      || '',
+      data.attendance || '',
+      data.guests     || '',
+      data.transport  || '',
+      data.message    || ''
+    ];
+
+    let status = 'ok';
+    if (existingRow > -1) {
+      sheet.getRange(existingRow, 1, 1, rowData.length).setValues([rowData]);
+      status = 'duplicate';
+    } else {
+      sheet.appendRow(rowData);
+    }
+
     return ContentService
-      .createTextOutput(JSON.stringify({ status: 'ok' }))
+      .createTextOutput(JSON.stringify({ status: status }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+
+  function doGet(e) {
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    const rows  = sheet.getDataRange().getValues();
+    let yes = 0, no = 0, guests = 0;
+    for (let i = 1; i < rows.length; i++) {
+      const attendance = (rows[i][3] || '').toString();
+      const guestCount = parseInt(rows[i][4], 10) || 0;
+      if (attendance === 'Ja') { yes++; guests += guestCount; }
+      else if (attendance === 'Nein') { no++; }
+    }
+    return ContentService
+      .createTextOutput(JSON.stringify({ yes: yes, no: no, guests: guests }))
       .setMimeType(ContentService.MimeType.JSON);
   }
 
@@ -438,6 +485,11 @@ footer p { margin-top: 6px; }
      – Ausführen als: Ich
      – Zugriff:       Jeder
   5. Die generierte URL unten bei GOOGLE_SCRIPT_URL eintragen
+
+  WICHTIG bei bereits bestehender Bereitstellung:
+  Nach dem Ändern des Codes musst du unter "Bereitstellen >
+  Bereitstellungen verwalten" eine NEUE VERSION auswählen und
+  bereitstellen – sonst bleibt der alte (fehlerhafte) Code aktiv.
 ═══════════════════════════════════════════════════════════════
 -->
 
