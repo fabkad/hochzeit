@@ -455,6 +455,11 @@ footer p { margin-top: 6px; }
 ═══════════════════════════════════════════════════════════════
   GOOGLE SHEETS SETUP
   ───────────────────────────────────────────────────────────
+  Spaltenreihenfolge im Sheet:
+  A Datum | B Person 1 | C E-Mail | D Zusage | E Anzahl |
+  F Transport | G Nachricht | H Person 2 | I Person 3 |
+  J Person 4 | K Person 5 | L Person 6 | M Person 7 | N Person 8
+
   1. Erstelle ein neues Google Sheet
   2. Öffne Erweiterungen > Apps Script
   3. Füge folgenden Code ein und speichere:
@@ -464,7 +469,7 @@ footer p { margin-top: 6px; }
     const data  = e.parameter; // Formular sendet form-urlencoded, NICHT JSON
 
     if (!sheet.getLastRow()) {
-      sheet.appendRow(['Datum','Name(n)','E-Mail','Zusage','Anzahl Gäste','Transport','Nachricht']);
+      sheet.appendRow(['Datum','Person 1','E-Mail','Zusage','Anzahl','Transport','Nachricht','Person 2','Person 3','Person 4','Person 5','Person 6','Person 7','Person 8']);
     }
 
     const email = (data.email || '').toString().trim().toLowerCase();
@@ -479,12 +484,19 @@ footer p { margin-top: 6px; }
 
     const rowData = [
       new Date(),
-      data.name       || '',
+      data.person1    || '',
       data.email      || '',
       data.attendance || '',
       data.guests     || '',
       data.transport  || '',
-      data.message    || ''
+      data.message    || '',
+      data.person2    || '',
+      data.person3    || '',
+      data.person4    || '',
+      data.person5    || '',
+      data.person6    || '',
+      data.person7    || '',
+      data.person8    || ''
     ];
 
     let status = 'ok';
@@ -524,6 +536,11 @@ footer p { margin-top: 6px; }
   Nach dem Ändern des Codes musst du unter "Bereitstellen >
   Bereitstellungen verwalten" eine NEUE VERSION auswählen und
   bereitstellen – sonst bleibt der alte (fehlerhafte) Code aktiv.
+
+  WICHTIG bei bereits vorhandenen Zeilen mit dem alten Format:
+  Lösche am besten die Testzeilen (Zeile 2-4 in deinem Sheet),
+  da sie mit dem alten Spalten-Layout geschrieben wurden und
+  die Werte dort verschoben/falsch sind.
 ═══════════════════════════════════════════════════════════════
 -->
 
@@ -1044,6 +1061,7 @@ const personLabels = {
   de: 'Person', hr: 'Osoba', en: 'Person'
 };
 function addPerson() {
+  if (personCount >= 8) return;
   personCount++;
   const list  = document.getElementById('personList');
   const row   = document.createElement('div');
@@ -1056,6 +1074,11 @@ function addPerson() {
       style="background:none; border:none; color:var(--muted); cursor:pointer; font-size:1.1em; padding:4px 6px; flex-shrink:0;">✕</button>
   `;
   list.appendChild(row);
+  updateAddPersonBtn();
+}
+function updateAddPersonBtn() {
+  const btn = document.getElementById('addPersonBtn');
+  if (btn) btn.style.display = personCount >= 8 ? 'none' : 'block';
 }
 function renumberPersons() {
   const rows = document.querySelectorAll('.person-row');
@@ -1064,6 +1087,7 @@ function renumberPersons() {
     if (lbl) lbl.textContent = (personLabels[lang] || 'Person') + ' ' + (i + 1);
   });
   personCount = rows.length;
+  updateAddPersonBtn();
 }
 
 // ─── SHOW/HIDE EXTRA FIELDS ─────────────────────────
@@ -1113,21 +1137,23 @@ document.getElementById('rsvpForm').addEventListener('submit', async function(e)
   btn.disabled = true;
   label.textContent = '…';
 
-  // Collect all person names
+  // Collect all person names (max. 8 Spalten im Sheet)
   const personInputs = document.querySelectorAll('.person-input');
   const persons = Array.from(personInputs)
     .map(i => i.value.trim()).filter(Boolean);
   const guestCount = persons.length;
 
-  const payload = new URLSearchParams({
-    name:       persons[0] || '',
+  const payloadObj = {
     email:      document.getElementById('f-email').value,
     attendance: document.getElementById('f-attend').value,
     guests:     guestCount,
     transport:  document.getElementById('f-transport').value,
-    message:    (persons.length > 1 ? 'Personen: ' + persons.join(', ') + '\n\n' : '')
-                + document.getElementById('f-msg').value,
-  });
+    message:    document.getElementById('f-msg').value,
+  };
+  for (let i = 0; i < 8; i++) {
+    payloadObj['person' + (i + 1)] = persons[i] || '';
+  }
+  const payload = new URLSearchParams(payloadObj);
 
   const showState = (id) => {
     document.getElementById('rsvpForm').style.display      = 'none';
