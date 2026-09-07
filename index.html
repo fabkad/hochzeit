@@ -454,6 +454,14 @@ footer p { margin-top: 6px; }
 }
 
 .hidden { display: none !important; }
+/* Keep faces visible when a portrait photo fills an ultrawide screen. */
+@media (min-width: 701px) and (min-aspect-ratio: 2/1) {
+  .hero {
+    background-position: center 60%;
+  }
+}
+
+.lang {}
 .lang {}
 </style>
 </head>
