@@ -58,8 +58,6 @@ body {
   min-height: 100vh;
   background:
     linear-gradient(to bottom, rgba(20,14,2,0.30) 0%, rgba(20,14,2,0.52) 100%),
-    url('hochzeit-petra-fabian.jpg')
-    center 20% / cover no-repeat fixed;
     url('hochzeit-petra-fabian responsiv.jpg')
     center 20% / cover no-repeat scroll;
   display: flex; align-items: center; justify-content: center;
@@ -411,7 +409,6 @@ footer p { margin-top: 6px; }
 
 /* ────────────────── REVEAL ────────────────── */
 .reveal {
-  opacity: 0; transform: translateY(28px);
   opacity: 1; transform: none;
   transition: opacity .85s ease-out, transform .85s ease-out;
 }
@@ -455,20 +452,11 @@ footer p { margin-top: 6px; }
     background-position: center, center;
     background-repeat: no-repeat;
     background-attachment: scroll;
-    background-size: cover;
-    background-position: center 72%;
     background-color: #4A3C20;
   }
 }
 
 .hidden { display: none !important; }
-/* Keep faces visible when a portrait photo fills an ultrawide screen. */
-@media (min-width: 701px) and (min-aspect-ratio: 2/1) {
-  .hero {
-    background-position: center 60%;
-  }
-}
-
 .lang {}
 </style>
 </head>
@@ -1049,7 +1037,6 @@ const T = {
 };
 
 let lang = 'de';
-let lang = 'de';
 
 const namePlaceholders = {
   de: 'Vorname Nachname',
@@ -1063,9 +1050,6 @@ const optionMap = {
   'o-tn':'o_tn', 'o-ty1':'o_ty1', 'o-ty2':'o_ty2'
 };
 
-function setLang(l) {
-  lang = l;
-  const t = T[l];
 function setLang(l) {
   lang = l;
   const t = T[l];
@@ -1090,7 +1074,6 @@ function setLang(l) {
   document.querySelectorAll('.lang-switch button').forEach(b => b.classList.remove('active'));
   document.getElementById('btn-' + l).classList.add('active');
   document.documentElement.lang = l;
-  document.documentElement.lang = l;
   renumberPersons();
 }
 
@@ -1108,7 +1091,6 @@ function addPerson() {
   row.style.cssText = 'display:flex; gap:10px; margin-bottom:10px; align-items:center;';
   row.innerHTML = `
     <span style="font-size:.8em; color:var(--gold); font-weight:600; min-width:62px;">${personLabels[lang] || 'Person'} ${personCount}</span>
-    <input type="text" class="person-input" placeholder="Vorname Nachname" style="flex:1; margin:0;">
     <input type="text" class="person-input" placeholder="${namePlaceholders[lang] || namePlaceholders.de}" style="flex:1; margin:0;">
     <button type="button" onclick="this.parentElement.remove(); renumberPersons();"
       style="background:none; border:none; color:var(--muted); cursor:pointer; font-size:1.1em; padding:4px 6px; flex-shrink:0;">✕</button>
@@ -1152,10 +1134,8 @@ setInterval(tick, 1000); tick();
 // ─── SCROLL REVEAL ──────────────────────────────────
 if ('IntersectionObserver' in window) {
 const ro = new IntersectionObserver(entries => {
-const ro = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } });
 }, { threshold: 0.08 });
-document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
 document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
 }
 
@@ -1187,8 +1167,6 @@ document.getElementById('rsvpForm').addEventListener('submit', async function(e)
     .map(i => i.value.trim()).filter(Boolean);
   const guestCount = persons.length;
 
-  const payloadObj = {
-    email:      document.getElementById('f-email').value,
   const payloadObj = {
     // Backward compatibility for older Apps Script deployments.
     name:       persons[0] || '',
@@ -1223,15 +1201,6 @@ document.getElementById('rsvpForm').addEventListener('submit', async function(e)
       // No 'Content-Type' override → browser sets application/x-www-form-urlencoded
       // No mode:'no-cors' → so we CAN read the JSON response
     });
-    const json = await res.json();
-    showState(json.status === 'duplicate' ? 'duplicate' : 'success');
-
-  } catch {
-    // Fallback: Apps Script sometimes redirects and fetch throws.
-    // Treat as success since the data was likely written.
-    showState('success');
-  }
-});
     if (!res.ok) throw new Error('Anmeldung konnte nicht gesendet werden.');
     const json = await res.json();
     if (!json || !['ok', 'duplicate'].includes(json.status)) {
