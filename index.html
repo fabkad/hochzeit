@@ -58,8 +58,10 @@ body {
   min-height: 100vh;
   background:
     linear-gradient(to bottom, rgba(20,14,2,0.30) 0%, rgba(20,14,2,0.52) 100%),
-    url('hochzeit-petra-fabian responsiv.jpg')
+    url('hochzeit-petra-fabian.jpg')
     center 20% / cover no-repeat fixed;
+    url('hochzeit-petra-fabian responsiv.jpg')
+    center 20% / cover no-repeat scroll;
   display: flex; align-items: center; justify-content: center;
   flex-direction: column; text-align: center;
   padding: 80px 24px; position: relative;
@@ -410,6 +412,7 @@ footer p { margin-top: 6px; }
 /* ────────────────── REVEAL ────────────────── */
 .reveal {
   opacity: 0; transform: translateY(28px);
+  opacity: 1; transform: none;
   transition: opacity .85s ease-out, transform .85s ease-out;
 }
 .reveal.visible { opacity: 1; transform: translateY(0); }
@@ -445,11 +448,16 @@ footer p { margin-top: 6px; }
 }
 
 /* utility */
+/* Show the entire photo on desktop, without cropping or stretching. */
 @media (min-width: 701px) {
   .hero {
+    background-size: cover, contain;
+    background-position: center, center;
+    background-repeat: no-repeat;
     background-attachment: scroll;
     background-size: cover;
     background-position: center 72%;
+    background-color: #4A3C20;
   }
 }
 
@@ -1082,6 +1090,8 @@ function setLang(l) {
   document.querySelectorAll('.lang-switch button').forEach(b => b.classList.remove('active'));
   document.getElementById('btn-' + l).classList.add('active');
   document.documentElement.lang = l;
+  document.documentElement.lang = l;
+  renumberPersons();
 }
 
 // ─── PERSON FIELDS ──────────────────────────────────
@@ -1140,10 +1150,14 @@ function tick() {
 setInterval(tick, 1000); tick();
 
 // ─── SCROLL REVEAL ──────────────────────────────────
+if ('IntersectionObserver' in window) {
+const ro = new IntersectionObserver(entries => {
 const ro = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } });
 }, { threshold: 0.08 });
 document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+}
 
 // ─── STATS LOADER ───────────────────────────────────
 async function loadStats() {
@@ -1228,7 +1242,12 @@ document.getElementById('rsvpForm').addEventListener('submit', async function(e)
   } catch (error) {
     btn.disabled = false;
     label.textContent = T[lang].f_submit;
-    alert('Die Anmeldung konnte nicht gespeichert werden. Bitte versucht es später erneut.');
+    const errors = {
+      de: 'Die Speicherung konnte nicht bestätigt werden. Bitte kontaktiert Petra und Fabian, bevor ihr die Anmeldung erneut sendet.',
+      hr: 'Spremanje nije moguće potvrditi. Molimo kontaktirajte Petru i Fabiana prije ponovnog slanja prijave.',
+      en: 'We could not confirm that your RSVP was saved. Please contact Petra and Fabian before submitting again.'
+    };
+    alert(errors[lang] || errors.de);
   }
 });
 </script>
