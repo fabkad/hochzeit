@@ -449,7 +449,7 @@ footer p { margin-top: 6px; }
   .hero {
     background-attachment: scroll;
     background-size: cover;
-    background-position: center 10%;
+    background-position: center 72%;
   }
 }
 
@@ -461,7 +461,6 @@ footer p { margin-top: 6px; }
   }
 }
 
-.lang {}
 .lang {}
 </style>
 </head>
@@ -1042,6 +1041,13 @@ const T = {
 };
 
 let lang = 'de';
+let lang = 'de';
+
+const namePlaceholders = {
+  de: 'Vorname Nachname',
+  hr: 'Ime i prezime',
+  en: 'First name Last name'
+};
 
 const optionMap = {
   'o-ph':'o_ph', 'o-yes':'o_yes', 'o-no':'o_no',
@@ -1052,6 +1058,13 @@ const optionMap = {
 function setLang(l) {
   lang = l;
   const t = T[l];
+function setLang(l) {
+  lang = l;
+  const t = T[l];
+  // Translate the name placeholder with the selected language.
+  document.querySelectorAll('.person-input').forEach(input => {
+    input.placeholder = namePlaceholders[l] || namePlaceholders.de;
+  });
   // text nodes
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const k = el.dataset.i18n;
@@ -1086,6 +1099,7 @@ function addPerson() {
   row.innerHTML = `
     <span style="font-size:.8em; color:var(--gold); font-weight:600; min-width:62px;">${personLabels[lang] || 'Person'} ${personCount}</span>
     <input type="text" class="person-input" placeholder="Vorname Nachname" style="flex:1; margin:0;">
+    <input type="text" class="person-input" placeholder="${namePlaceholders[lang] || namePlaceholders.de}" style="flex:1; margin:0;">
     <button type="button" onclick="this.parentElement.remove(); renumberPersons();"
       style="background:none; border:none; color:var(--muted); cursor:pointer; font-size:1.1em; padding:4px 6px; flex-shrink:0;">✕</button>
   `;
