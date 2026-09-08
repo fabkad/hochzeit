@@ -445,11 +445,11 @@ footer p { margin-top: 6px; }
 }
 
 /* utility */
-/* Show the entire photo on desktop, without cropping or stretching. */
+/* Fill wide screens while keeping the couple's faces in the crop. */
 @media (min-width: 701px) {
   .hero {
-    background-size: cover, contain;
-    background-position: center, center;
+    background-size: cover, cover;
+    background-position: center, center 30%;
     background-repeat: no-repeat;
     background-attachment: scroll;
     background-color: #4A3C20;
