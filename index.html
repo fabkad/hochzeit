@@ -59,6 +59,7 @@ body {
   background:
     linear-gradient(to bottom, rgba(20,14,2,0.30) 0%, rgba(20,14,2,0.52) 100%),
     url('hochzeit-petra-fabian.jpg')
+    url('hochzeit-petra-fabian responsiv.jpg')
     center 20% / cover no-repeat fixed;
   display: flex; align-items: center; justify-content: center;
   flex-direction: column; text-align: center;
@@ -1175,6 +1176,10 @@ document.getElementById('rsvpForm').addEventListener('submit', async function(e)
 
   const payloadObj = {
     email:      document.getElementById('f-email').value,
+  const payloadObj = {
+    // Backward compatibility for older Apps Script deployments.
+    name:       persons[0] || '',
+    email:      document.getElementById('f-email').value,
     attendance: document.getElementById('f-attend').value,
     guests:     guestCount,
     transport:  document.getElementById('f-transport').value,
@@ -1212,6 +1217,19 @@ document.getElementById('rsvpForm').addEventListener('submit', async function(e)
     // Fallback: Apps Script sometimes redirects and fetch throws.
     // Treat as success since the data was likely written.
     showState('success');
+  }
+});
+    if (!res.ok) throw new Error('Anmeldung konnte nicht gesendet werden.');
+    const json = await res.json();
+    if (!json || !['ok', 'duplicate'].includes(json.status)) {
+      throw new Error('Ungültige Antwort vom Anmeldesystem.');
+    }
+    showState(json.status === 'duplicate' ? 'duplicate' : 'success');
+
+  } catch (error) {
+    btn.disabled = false;
+    label.textContent = T[lang].f_submit;
+    alert('Die Anmeldung konnte nicht gespeichert werden. Bitte versucht es später erneut.');
   }
 });
 </script>
