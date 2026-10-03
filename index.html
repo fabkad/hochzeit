@@ -1406,18 +1406,13 @@ document.getElementById('rsvpForm').addEventListener('submit', async function(e)
       return;
     }
 
-    const res  = await fetch(GOOGLE_SCRIPT_URL, {
-      method:  'POST',
-      body:    payload,
-      // No 'Content-Type' override → browser sets application/x-www-form-urlencoded
-      // No mode:'no-cors' → so we CAN read the JSON response
-    });
-    if (!res.ok) throw new Error('Anmeldung konnte nicht gesendet werden.');
-    const json = await res.json();
-    if (!json || !['ok', 'duplicate'].includes(json.status)) {
-      throw new Error('Ungültige Antwort vom Anmeldesystem.');
-    }
-    showState(json.status === 'duplicate' ? 'duplicate' : 'success');
+await fetch(GOOGLE_SCRIPT_URL, {
+  method: 'POST',
+  mode: 'no-cors',
+  body: payload
+});
+
+showState('success');
 
   } catch (error) {
     btn.disabled = false;
