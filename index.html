@@ -1082,15 +1082,18 @@ function doGet(e) {
       </div>
 
       <div class="extra-fields hidden" id="extraFields">
-        <div class="form-group">
-          <label data-i18n="f_transport">Benötigst du eine Fahrgelegenheit?</label>
-          <select id="f-transport">
-            <option value="Nein"       id="o-tn">Nein, ich komme selbst</option>
-            <option value="Vom Flughafen Zagreb" id="o-ty1">Ja – vom Flughafen Zagreb nach Unčani / zur Party</option>
-            <option value="Aus Deutschland" id="o-ty2">Ja – aus Deutschland nach Kroatien</option>
-          </select>
-        </div>
-      </div>
+  <div class="form-group">
+    <label data-i18n="f_transport">Benötigst du eine Fahrgelegenheit?</label>
+
+    <select id="f-transport" required>
+      <option value="" selected disabled>— Bitte wählen —</option>
+      <option value="Nein" id="o-tn">Nein, ich komme selbst</option>
+      <option value="Vom Flughafen Zagreb" id="o-ty1">Ja – vom Flughafen Zagreb nach Unčani / zur Party</option>
+      <option value="Aus Deutschland" id="o-ty2">Ja – aus Deutschland nach Kroatien</option>
+    </select>
+
+  </div>
+</div>
 
       <div class="form-group">
         <label data-i18n="f_msg">Nachricht an uns (optional)</label>
