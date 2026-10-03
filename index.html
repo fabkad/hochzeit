@@ -1301,10 +1301,24 @@ function renumberPersons() {
 
 // ─── SHOW/HIDE EXTRA FIELDS ─────────────────────────
 function toggleExtra() {
-  const v = document.getElementById('f-attend').value;
-  document.getElementById('extraFields').classList.toggle('hidden', v !== 'Ja');
+  const attendance =
+    document.getElementById('f-attend').value;
+
+  const extraFields =
+    document.getElementById('extraFields');
+
+  const transport =
+    document.getElementById('f-transport');
+
+  if (attendance === 'Ja') {
+    extraFields.classList.remove('hidden');
+  } else {
+    extraFields.classList.add('hidden');
+
+    // Bei Absage Transport zurücksetzen
+    transport.value = 'Nein';
+  }
 }
-function toggleCompNames() {}
 
 // ─── COUNTDOWN ──────────────────────────────────────
 const wDate = new Date("2027-08-13T15:30:00").getTime();
@@ -1331,61 +1345,88 @@ document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
 // ─── RSVP SUBMIT ────────────────────────────────────
 document.getElementById('rsvpForm').addEventListener('submit', async function(e) {
   e.preventDefault();
+
   const btn   = document.getElementById('submitBtn');
   const label = document.getElementById('submitLabel');
+
   btn.disabled = true;
   label.textContent = '…';
 
-  // Collect all person names (max. 8 Spalten im Sheet)
+  // Personen sammeln
   const personInputs = document.querySelectorAll('.person-input');
+
   const persons = Array.from(personInputs)
-    .map(i => i.value.trim()).filter(Boolean);
-  const guestCount = persons.length;
+    .map(input => input.value.trim())
+    .filter(Boolean);
+
+  const attendance =
+    document.getElementById('f-attend').value;
+
+  // Transport nur speichern, wenn die Person zugesagt hat
+  const transport =
+    attendance === 'Ja'
+      ? document.getElementById('f-transport').value
+      : '';
 
   const payloadObj = {
-    // Backward compatibility for older Apps Script deployments.
     name:       persons[0] || '',
     email:      document.getElementById('f-email').value.trim(),
-    attendance: document.getElementById('f-attend').value,
-    guests:     guestCount,
-    transport:  document.getElementById('f-transport').value,
-    message:    document.getElementById('f-msg').value,
+    attendance: attendance,
+    guests:     persons.length,
+    transport:  transport,
+    message:    document.getElementById('f-msg').value.trim()
   };
+
+  // Person 1 bis Person 8
   for (let i = 0; i < 8; i++) {
     payloadObj['person' + (i + 1)] = persons[i] || '';
   }
-  const payload = new URLSearchParams(payloadObj);
 
-  const showState = (id) => {
-    document.getElementById('rsvpForm').style.display      = 'none';
-    document.getElementById('formSuccess').style.display   = id === 'success'   ? 'block' : 'none';
-    document.getElementById('formDuplicate').style.display = id === 'duplicate' ? 'block' : 'none';
-    loadStats(); // refresh counter
-  };
+  const payload =
+    new URLSearchParams(payloadObj);
 
   try {
-    if (GOOGLE_SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
-      await new Promise(r => setTimeout(r, 900));
-      showState('success');
-      return;
+
+    await fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: payload
+    });
+
+    document.getElementById('rsvpForm').style.display =
+      'none';
+
+    document.getElementById('formSuccess').style.display =
+      'block';
+
+    const duplicate =
+      document.getElementById('formDuplicate');
+
+    if (duplicate) {
+      duplicate.style.display = 'none';
     }
 
-await fetch(GOOGLE_SCRIPT_URL, {
-  method: 'POST',
-  mode: 'no-cors',
-  body: payload
-});
-
-showState('success');
-
   } catch (error) {
+
+    console.error('RSVP Fehler:', error);
+
     btn.disabled = false;
-    label.textContent = T[lang].f_submit;
-    const errors = {
-      de: 'Die Speicherung konnte nicht bestätigt werden. Bitte kontaktiert Petra und Fabian, bevor ihr die Anmeldung erneut sendet.',
-      hr: 'Spremanje nije moguće potvrditi. Molimo kontaktirajte Petru i Fabiana prije ponovnog slanja prijave.',
-      en: 'We could not confirm that your RSVP was saved. Please contact Petra and Fabian before submitting again.'
+
+    const buttonTexts = {
+      de: 'Anmeldung absenden ♥',
+      hr: 'Pošalji prijavu ♥',
+      en: 'Send RSVP ♥'
     };
+
+    label.textContent =
+      buttonTexts[lang] || buttonTexts.de;
+
+    const errors = {
+      de: 'Die Anmeldung konnte nicht gesendet werden. Bitte versucht es später erneut oder kontaktiert Petra und Fabian.',
+      hr: 'Prijavu nije moguće poslati. Molimo pokušajte ponovno kasnije ili kontaktirajte Petru i Fabiana.',
+      en: 'Your RSVP could not be sent. Please try again later or contact Petra and Fabian.'
+    };
+
     alert(errors[lang] || errors.de);
   }
 });
