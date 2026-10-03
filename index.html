@@ -1030,31 +1030,7 @@ function doGet(e) {
   <p class="s-sub lang hr hidden">Molimo vas da nam se javite najkasnije do <strong>1. svibnja 2027.</strong></p>
   <p class="s-sub lang en hidden">Kindly RSVP by <strong>May 1, 2027</strong> at the latest.</p>
 
-  <!-- Stats bar (loaded from Apps Script) -->
-  <div id="rsvpStats" style="display:none; margin-bottom:28px; background:var(--white); border-radius:16px; padding:20px 28px; border:1px solid var(--border); box-shadow:0 4px 18px var(--shadow);">
-    <div style="display:flex; justify-content:center; gap:32px; flex-wrap:wrap;">
-      <div style="text-align:center;">
-        <div style="font-family:'Cormorant Garamond',serif; font-size:2em; color:var(--gold); line-height:1;" id="stat-yes">—</div>
-        <div style="font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-top:4px;" class="lang de">Zusagen</div>
-        <div style="font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-top:4px; display:none;" class="lang hr">Potvrde</div>
-        <div style="font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-top:4px; display:none;" class="lang en">Confirmed</div>
-      </div>
-      <div style="width:1px; background:var(--border);"></div>
-      <div style="text-align:center;">
-        <div style="font-family:'Cormorant Garamond',serif; font-size:2em; color:var(--gold); line-height:1;" id="stat-guests">—</div>
-        <div style="font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-top:4px;" class="lang de">Gäste</div>
-        <div style="font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-top:4px; display:none;" class="lang hr">Gosti</div>
-        <div style="font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-top:4px; display:none;" class="lang en">Guests</div>
-      </div>
-      <div style="width:1px; background:var(--border);"></div>
-      <div style="text-align:center;">
-        <div style="font-family:'Cormorant Garamond',serif; font-size:2em; color:var(--muted); line-height:1;" id="stat-no">—</div>
-        <div style="font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-top:4px;" class="lang de">Absagen</div>
-        <div style="font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-top:4px; display:none;" class="lang hr">Odustali</div>
-        <div style="font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-top:4px; display:none;" class="lang en">Declined</div>
-      </div>
-    </div>
-  </div>
+ 
 
   <div class="rsvp-card">
     <!-- Success state -->
@@ -1350,19 +1326,7 @@ const ro = new IntersectionObserver(entries => {
 document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
 }
 
-// ─── STATS LOADER ───────────────────────────────────
-async function loadStats() {
-  if (GOOGLE_SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') return;
-  try {
-    const res = await fetch(GOOGLE_SCRIPT_URL + '?stats=1');
-    const data = await res.json();
-    document.getElementById('stat-yes').textContent    = data.yes    ?? '—';
-    document.getElementById('stat-guests').textContent = data.guests ?? '—';
-    document.getElementById('stat-no').textContent     = data.no     ?? '—';
-    document.getElementById('rsvpStats').style.display = 'block';
-  } catch { /* silently fail if not connected */ }
-}
-loadStats();
+
 
 // ─── RSVP SUBMIT ────────────────────────────────────
 document.getElementById('rsvpForm').addEventListener('submit', async function(e) {
