@@ -464,96 +464,307 @@ footer p { margin-top: 6px; }
 
 <!--
 ═══════════════════════════════════════════════════════════════
-  GOOGLE SHEETS SETUP
+  GOOGLE SHEETS / RSVP SETUP
   ───────────────────────────────────────────────────────────
-  Spaltenreihenfolge im Sheet:
+  Das Formular schreibt immer genau EINE Zeile pro Anmeldung.
+
+  Spalten im Tabellenblatt "RSVP":
   A Datum | B Person 1 | C E-Mail | D Zusage | E Anzahl |
   F Transport | G Nachricht | H Person 2 | I Person 3 |
   J Person 4 | K Person 5 | L Person 6 | M Person 7 | N Person 8
 
-  1. Erstelle ein neues Google Sheet
-  2. Öffne Erweiterungen > Apps Script
-  3. Füge folgenden Code ein und speichere:
+  WICHTIG:
+  - E-Mail ist OPTIONAL.
+  - Mit E-Mail wird eine bestehende Anmeldung über die E-Mail erkannt.
+  - Ohne E-Mail wird eine bestehende Anmeldung über die vollständige
+    Namensliste erkannt. Die Reihenfolge der Namen spielt dabei keine Rolle.
+  - Ein Doppelklick / zwei nahezu gleichzeitige Einsendungen erzeugen
+    dank LockService keine zweite Zeile.
 
-  function doPost(e) {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-    const data  = e.parameter; // Formular sendet form-urlencoded, NICHT JSON
+  GOOGLE APPS SCRIPT
+  ───────────────────────────────────────────────────────────
+  1. Öffne das mit dieser Website verbundene Google Sheet.
+  2. Öffne Erweiterungen > Apps Script.
+  3. Lösche den bisherigen Code und füge den folgenden Code ein.
+  4. Speichern.
+  5. Unter Bereitstellen > Bereitstellungen verwalten die Web-App
+     bearbeiten und eine NEUE VERSION bereitstellen.
 
-    if (!sheet.getLastRow()) {
-      sheet.appendRow(['Datum','Person 1','E-Mail','Zusage','Anzahl','Transport','Nachricht','Person 2','Person 3','Person 4','Person 5','Person 6','Person 7','Person 8']);
+  Der Code verwendet das Tabellenblatt "RSVP".
+  Falls es noch nicht existiert, wird es automatisch erstellt.
+
+  6. Die Web-App muss ausgeführt werden als: Ich
+     Zugriff: Jeder
+
+  7. Die Web-App-URL unten bei GOOGLE_SCRIPT_URL eintragen.
+
+  WICHTIG:
+  Das alte Tabellenblatt mit dem fehlerhaften Spaltenlayout nicht weiter
+  für neue Anmeldungen verwenden. Der neue Code benutzt bewusst ein
+  eigenes Blatt "RSVP", damit die alten/falsch verschobenen Testzeilen
+  nicht mehr die neuen Daten verfälschen.
+═══════════════════════════════════════════════════════════════
+
+<script type="text/plain" id="google-apps-script-code">
+const SHEET_NAME = 'RSVP';
+
+const HEADERS = [
+  'Datum',
+  'Person 1',
+  'E-Mail',
+  'Zusage',
+  'Anzahl',
+  'Transport',
+  'Nachricht',
+  'Person 2',
+  'Person 3',
+  'Person 4',
+  'Person 5',
+  'Person 6',
+  'Person 7',
+  'Person 8'
+];
+
+function getSheet() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = ss.getSheetByName(SHEET_NAME);
+
+  if (!sheet) {
+    sheet = ss.insertSheet(SHEET_NAME);
+  }
+
+  if (sheet.getLastRow() === 0) {
+    sheet.getRange(1, 1, 1, HEADERS.length).setValues([HEADERS]);
+    sheet.setFrozenRows(1);
+    return sheet;
+  }
+
+  const header = sheet.getRange(1, 1, 1, HEADERS.length).getValues()[0];
+  const headerMatches = HEADERS.every((value, index) => header[index] === value);
+
+  // Falls bereits ein altes/falsch aufgebautes Blatt "RSVP" existiert,
+  // wird es nicht verändert. Es wird automatisch archiviert und ein
+  // sauberes neues RSVP-Blatt angelegt. So können alte Testdaten die
+  // neue Anmeldung nicht mehr verschieben oder verfälschen.
+  if (!headerMatches) {
+    const archiveName = 'RSVP_Alt_' + Utilities.formatDate(
+      new Date(),
+      Session.getScriptTimeZone(),
+      'yyyyMMdd_HHmmss'
+    );
+
+    sheet.setName(archiveName);
+    sheet = ss.insertSheet(SHEET_NAME);
+    sheet.getRange(1, 1, 1, HEADERS.length).setValues([HEADERS]);
+    sheet.setFrozenRows(1);
+  }
+
+  return sheet;
+}
+
+function normalizeName(name) {
+  return String(name || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, ' ');
+}
+
+function normalizeEmail(email) {
+  return String(email || '')
+    .trim()
+    .toLowerCase();
+}
+
+function createPeopleKey(persons) {
+  return persons
+    .map(normalizeName)
+    .filter(Boolean)
+    .sort()
+    .join('|');
+}
+
+function jsonResponse(obj) {
+  return ContentService
+    .createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function doPost(e) {
+  const lock = LockService.getScriptLock();
+
+  try {
+    lock.waitLock(10000);
+
+    const sheet = getSheet();
+    const data = e && e.parameter ? e.parameter : {};
+
+    // Alle Personen aus dem Formular auslesen.
+    const persons = [];
+
+    for (let i = 1; i <= 8; i++) {
+      const name = String(data['person' + i] || '').trim();
+      if (name) persons.push(name);
     }
 
-    const email = (data.email || '').toString().trim().toLowerCase();
-    const rows  = sheet.getDataRange().getValues();
+    // Kompatibilität mit älteren Formularversionen.
+    if (persons.length === 0 && data.name) {
+      const oldName = String(data.name).trim();
+      if (oldName) persons.push(oldName);
+    }
+
+    if (persons.length === 0) {
+      return jsonResponse({
+        status: 'error',
+        message: 'Kein Name angegeben.'
+      });
+    }
+
+    const email = normalizeEmail(data.email);
+
+    let attendance = String(data.attendance || '').trim();
+    if (attendance !== 'Ja' && attendance !== 'Nein') {
+      attendance = '';
+    }
+
+    const transport = String(data.transport || '').trim();
+    const message = String(data.message || '').trim();
+    const guestCount = persons.length;
+    const peopleKey = createPeopleKey(persons);
+
+    // Bestehende Anmeldung suchen.
     let existingRow = -1;
-    for (let i = 1; i < rows.length; i++) {
-      if ((rows[i][2] || '').toString().trim().toLowerCase() === email && email !== '') {
-        existingRow = i + 1; // 1-indexiert
-        break;
+    const lastRow = sheet.getLastRow();
+
+    if (lastRow >= 2) {
+      const rows = sheet
+        .getRange(2, 1, lastRow - 1, HEADERS.length)
+        .getValues();
+
+      for (let i = 0; i < rows.length; i++) {
+        const row = rows[i];
+
+        // C = E-Mail
+        const existingEmail = normalizeEmail(row[2]);
+
+        // B sowie H:N = Personen
+        const existingPersons = [];
+
+        if (row[1]) existingPersons.push(String(row[1]));
+
+        for (let col = 7; col <= 13; col++) {
+          if (row[col]) existingPersons.push(String(row[col]));
+        }
+
+        const existingPeopleKey = createPeopleKey(existingPersons);
+
+        // 1. Wenn eine E-Mail vorhanden ist, ist sie der eindeutige Schlüssel.
+        if (
+          email !== '' &&
+          existingEmail !== '' &&
+          email === existingEmail
+        ) {
+          existingRow = i + 2;
+          break;
+        }
+
+        // 2. Wenn keine E-Mail vorhanden ist, werden die vollständigen
+        //    Namen verglichen. Die Reihenfolge ist egal.
+        if (
+          email === '' &&
+          existingEmail === '' &&
+          peopleKey !== '' &&
+          peopleKey === existingPeopleKey
+        ) {
+          existingRow = i + 2;
+          break;
+        }
       }
     }
 
     const rowData = [
       new Date(),
-      data.person1    || '',
-      data.email      || '',
-      data.attendance || '',
-      data.guests     || '',
-      data.transport  || '',
-      data.message    || '',
-      data.person2    || '',
-      data.person3    || '',
-      data.person4    || '',
-      data.person5    || '',
-      data.person6    || '',
-      data.person7    || '',
-      data.person8    || ''
+      persons[0] || '',
+      email,
+      attendance,
+      guestCount,
+      transport,
+      message,
+      persons[1] || '',
+      persons[2] || '',
+      persons[3] || '',
+      persons[4] || '',
+      persons[5] || '',
+      persons[6] || '',
+      persons[7] || ''
     ];
 
-    let status = 'ok';
-    if (existingRow > -1) {
-      sheet.getRange(existingRow, 1, 1, rowData.length).setValues([rowData]);
-      status = 'duplicate';
-    } else {
-      sheet.appendRow(rowData);
+    // Bestehende Anmeldung aktualisieren.
+    if (existingRow > 0) {
+      sheet
+        .getRange(existingRow, 1, 1, HEADERS.length)
+        .setValues([rowData]);
+
+      return jsonResponse({ status: 'duplicate' });
     }
 
-    return ContentService
-      .createTextOutput(JSON.stringify({ status: status }))
-      .setMimeType(ContentService.MimeType.JSON);
-  }
+    // Neue Anmeldung speichern.
+    sheet.appendRow(rowData);
 
-  function doGet(e) {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-    const rows  = sheet.getDataRange().getValues();
-    let yes = 0, no = 0, guests = 0;
-    for (let i = 1; i < rows.length; i++) {
-      const attendance = (rows[i][3] || '').toString();
+    return jsonResponse({ status: 'ok' });
+
+  } catch (error) {
+    return jsonResponse({
+      status: 'error',
+      message: String(error)
+    });
+
+  } finally {
+    try {
+      lock.releaseLock();
+    } catch (e) {}
+  }
+}
+
+function doGet(e) {
+  const sheet = getSheet();
+  const lastRow = sheet.getLastRow();
+
+  let yes = 0;
+  let no = 0;
+  let guests = 0;
+
+  if (lastRow >= 2) {
+    const rows = sheet
+      .getRange(2, 1, lastRow - 1, HEADERS.length)
+      .getValues();
+
+    for (let i = 0; i < rows.length; i++) {
+      const attendance = String(rows[i][3] || '').trim();
       const guestCount = parseInt(rows[i][4], 10) || 0;
-      if (attendance === 'Ja') { yes++; guests += guestCount; }
-      else if (attendance === 'Nein') { no++; }
+
+      if (attendance === 'Ja') {
+        yes++;
+        guests += guestCount;
+      } else if (attendance === 'Nein') {
+        no++;
+      }
     }
-    return ContentService
-      .createTextOutput(JSON.stringify({ yes: yes, no: no, guests: guests }))
-      .setMimeType(ContentService.MimeType.JSON);
   }
 
-  4. Bereitstellen > Neue Bereitstellung > Web-App
-     – Ausführen als: Ich
-     – Zugriff:       Jeder
-  5. Die generierte URL unten bei GOOGLE_SCRIPT_URL eintragen
+  return jsonResponse({
+    yes: yes,
+    no: no,
+    guests: guests
+  });
+}
+</script>
 
-  WICHTIG bei bereits bestehender Bereitstellung:
-  Nach dem Ändern des Codes musst du unter "Bereitstellen >
-  Bereitstellungen verwalten" eine NEUE VERSION auswählen und
-  bereitstellen – sonst bleibt der alte (fehlerhafte) Code aktiv.
-
-  WICHTIG bei bereits vorhandenen Zeilen mit dem alten Format:
-  Lösche am besten die Testzeilen (Zeile 2-4 in deinem Sheet),
-  da sie mit dem alten Spalten-Layout geschrieben wurden und
-  die Werte dort verschoben/falsch sind.
-═══════════════════════════════════════════════════════════════
+  Hinweis: Der Code zwischen <script type="text/plain"> und </script>
+  ist nur Dokumentation für dich. Er wird nicht von der Webseite ausgeführt.
 -->
+
 
 <!-- LANG SWITCH -->
 <div class="lang-switch">
@@ -881,8 +1092,8 @@ footer p { margin-top: 6px; }
       </div>
 
       <div class="form-group">
-        <label data-i18n="f_email">E-Mail Adresse</label>
-        <input type="email" id="f-email" autocomplete="email" required>
+        <label data-i18n="f_email">E-Mail Adresse (optional)</label>
+        <input type="email" id="f-email" autocomplete="email">
       </div>
 
       <div class="form-group">
@@ -949,7 +1160,7 @@ const T = {
     h2_desc:'Details folgen in Kürze. Eine weitere tolle Option für eure Übernachtung.',
     hotel_btn:'Details →',
     rsvp_label:'Anmeldung', rsvp_title:'Bitte meldet euch an',
-    f_name:'Dein Name', f_email:'E-Mail Adresse',
+    f_name:'Dein Name', f_email:'E-Mail Adresse (optional)',
     f_attend:'Kannst du kommen?',
     f_persons:'Personen',
     f_persons_hint:'Trage alle mitfeiernden Personen ein – du selbst und deine Familie.',
@@ -983,7 +1194,7 @@ const T = {
     h2_desc:'Više informacija uskoro. Još jedna odlična opcija za noćenje.',
     hotel_btn:'Detalji →',
     rsvp_label:'Prijava', rsvp_title:'Molimo prijavite se',
-    f_name:'Vaše ime', f_email:'E-mail adresa',
+    f_name:'Vaše ime', f_email:'E-mail adresa (neobavezno)',
     f_attend:'Možete li doći?',
     f_persons:'Osobe',
     f_persons_hint:'Unesite sve sudionike – sebe i svoju obitelj.',
@@ -1017,7 +1228,7 @@ const T = {
     h2_desc:'More details coming soon. Another great option for your stay.',
     hotel_btn:'Details →',
     rsvp_label:'RSVP', rsvp_title:'Please RSVP',
-    f_name:'Your name', f_email:'Email address',
+    f_name:'Your name', f_email:'Email address (optional)',
     f_attend:'Will you be attending?',
     f_persons:'Persons',
     f_persons_hint:'Enter all attending persons – yourself and your family.',
@@ -1170,7 +1381,7 @@ document.getElementById('rsvpForm').addEventListener('submit', async function(e)
   const payloadObj = {
     // Backward compatibility for older Apps Script deployments.
     name:       persons[0] || '',
-    email:      document.getElementById('f-email').value,
+    email:      document.getElementById('f-email').value.trim(),
     attendance: document.getElementById('f-attend').value,
     guests:     guestCount,
     transport:  document.getElementById('f-transport').value,
