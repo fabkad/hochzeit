@@ -1075,7 +1075,7 @@ function doGet(e) {
       <div class="form-group">
         <label data-i18n="f_attend">Kannst du kommen?</label>
         <select id="f-attend" onchange="toggleExtra()" required>
-          <option value="" id="o-ph">— Bitte wählen —</option>
+          <option value="" id="o-ph"  selected disabled>— Bitte wählen —</option>
           <option value="Ja" id="o-yes">Ja, ich komme! 🎉</option>
           <option value="Nein" id="o-no">Leider nicht 😢</option>
         </select>
@@ -1086,7 +1086,7 @@ function doGet(e) {
     <label data-i18n="f_transport">Benötigst du eine Fahrgelegenheit?</label>
 
     <select id="f-transport" required>
-      <option value="" selected disabled>— Bitte wählen —</option>
+      <option value="" id="o-transport-ph" selected disabled>— Bitte wählen —</option>
       <option value="Nein" id="o-tn">Nein, ich komme selbst</option>
       <option value="Vom Flughafen Zagreb" id="o-ty1">Ja – vom Flughafen Zagreb nach Unčani / zur Party</option>
       <option value="Aus Deutschland" id="o-ty2">Ja – aus Deutschland nach Kroatien</option>
@@ -1235,9 +1235,15 @@ const namePlaceholders = {
 };
 
 const optionMap = {
-  'o-ph':'o_ph', 'o-yes':'o_yes', 'o-no':'o_no',
-  'o-cn':'o_cn', 'o-cy':'o_cy',
-  'o-tn':'o_tn', 'o-ty1':'o_ty1', 'o-ty2':'o_ty2'
+  'o-ph':'o_ph',
+  'o-transport-ph':'o_ph',
+  'o-yes':'o_yes',
+  'o-no':'o_no',
+  'o-cn':'o_cn',
+  'o-cy':'o_cy',
+  'o-tn':'o_tn',
+  'o-ty1':'o_ty1',
+  'o-ty2':'o_ty2'
 };
 
 function setLang(l) {
